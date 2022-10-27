@@ -1,0 +1,6 @@
+<!--components/custom-toast/index.wxml-->
+<view class="custom-toast" animation="{{animateData}}">
+    <view class="custom-toast-content">
+        <text>{{message}}</text>
+    </view>
+</view>

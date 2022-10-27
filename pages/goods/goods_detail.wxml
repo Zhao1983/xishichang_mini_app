@@ -1,0 +1,178 @@
+<!--pages/goods/goods_detail.wxml-->
+<wxs src="../../filter/filter.wxs" module="filter" />
+<navigation-bar background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{false}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view wx:if="{{isShowOption}}" class="bg-mask" data-show="hide" bindtap="setShowOption"></view>
+<view class="container" style="padding-bottom: {{menuHeight + 15 + 'px'}}; height: {{ isShowOption ? '300px' : 'auto' }}; overflow: {{ isShowOption ? 'hidden !important' : 'auto' }};">
+    <view class="goods-swiper">
+        <swiper class="swiper">
+            <swiper-item wx:if="{{goodsVideo !== '' && goodsVideo !== null}}" class="swiper-item" data-index="0" data-type="video" bindtap="detailMedia">
+                <view class="content">
+                    <video src="{{goodsVideo}}" class="video" autoplay="{{isAutoPlay}}"></video>
+                </view>
+            </swiper-item>
+            <block wx:for="{{goodsImages}}" wx:for-index="index" wx:key="index">
+                <swiper-item wx:if="{{goodsVideo !== '' && goodsVideo !== null}}" class="swiper-item" bindtap="detailMedia" data-index="{{index + 1}}" data-type="image">
+                    <view class="content">
+                        <image class="image" src="{{item.uri}}" lazy-load></image>
+                        <image wx:if="{{waterMarkPic !== '' && waterMarkPic !== null}}" class="watermark" src="{{watermarkPic}}"></image>
+                        <image wx:if="{{waterMarkWord !== '' && waterMarkWord !== null}}" class="watermark-word" src="{{waterMarkWord}}"></image>
+                    </view>
+                </swiper-item>
+                <swiper-item wx:else class="swiper-item" bindtap="detailMedia" data-index="{{index}}" data-type="image">
+                    <view class="content">
+                        <image class="image" src="{{item.uri}}" lazy-load></image>
+                        <image wx:if="{{waterMarkPic !== '' && waterMarkPic !== null}}" class="watermark" src="{{waterMarkPic}}"></image>
+                        <image wx:if="{{waterMarkWord !== '' && waterMarkWord !== null}}" class="watermark-word" src="{{waterMarkWord}}"></image>
+                    </view>
+                </swiper-item>
+            </block>
+        </swiper>
+    </view>
+    <view class="goods-content">
+        <view class="goods-info-content">
+            <view class="price-content">
+                <view class="goods-price-info">
+                    <view class="price-info">
+                        <text class="symbol">¥</text>
+                        <text class="price">{{filter.addComma(salesPrice)}}</text>
+                        <text class="unit">/{{goodsUnit}}</text>
+                        <text wx:if="{{originalPrice > 0}}" class="original-price">¥{{filter.addComma(originalPrice)}}</text>
+                    </view>
+                    <view class="adword-info">
+                        <view wx:if="{{isAdWord}}" class="adword">{{adWords2}}</view>
+                    </view>
+                </view>
+                <view wx:if="{{eventGoodsStatus === '1'}}" class="mt-15 mb-15">
+                    <view wx:if="{{freeShippingStatus === '1'}}" class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                    <view wx:if="{{freePackageStatus === '1'}}" class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                </view>
+                <view class="goods-title">{{goodsName}}</view>
+                <view class="goods-adword">{{adWords}}</view>
+            </view>
+            <view class="delivery-content">
+                <view class="item">
+                    <image class="icon-1" src="/static/images/ico_delivery_2.png"></image>
+                    <text class="text ml-6">延吉市内预计1小时内送达</text>
+                </view>
+                <view class="item mt-10">
+                    <image class="icon-2" src="/static/images/ico_delivery_1.png"></image>
+                    <text class="text ml-6">全国72小时发货</text>
+                </view>
+            </view>
+        </view>
+        <view wx:if="{{props.length !== 0}}" class="option-info-content">
+            <text class="title">商品规格</text>
+            <view class="item-list">
+                <block wx:for="{{props}}" wx:key="index">
+                    <view wx:if="{{item.status === '1'}}" class="item">
+                        <text class="key">{{item.key}}</text>
+                        <text class="value">{{item.value}}</text>
+                    </view>
+                </block>
+            </view>
+        </view>
+        <view class="shop-info-content">
+            <shop-item shopId="{{shopId}}" shopName="{{shopName}}" age="{{age}}" starNum="{{starNum}}" shopIntro="{{shopIntro}}" goods="{{goods}}" eventStatus="{{eventStatus}}" avatarUri="{{avatarUri}}"
+                view="goods_detail" />
+        </view>
+        <view class="goods-detail-info">
+            <text class="detail-title">商品详情</text>
+            <view class="detail-info">
+                <rich-text nodes="{{goodsIntro}}"></rich-text>
+            </view>
+        </view>
+        <view class="goods-info-footer">
+            <rich-text nodes="{{footer}}"></rich-text>
+        </view>
+    </view>
+    <view class="goods-menu-bar" style="height: {{menuHeight + 'px'}};">
+        <view class="menu-content">
+            <view class="left">
+                <view class="left-item" data-menu="main" bindtap="setMenu">
+                    <image class="item-image" src="/static/images/ico_main_1.png"></image>
+                </view>
+                <!-- <view class="left-item" data-menu="service" bindtap="setMenu">
+                    <image class="item-image" src="/static/images/ico_message.png" style="width: 22px; height: 38px;"></image>
+                </view> -->
+                <button class="left-item" open-type="contact" style="margin: 0 !important; padding: 0 !important; background-color: #fff;">
+                    <image class="item-image" src="/static/images/ico_message.png" style="width: 24px; height: 38px;"></image>
+                </button>
+                <view class="left-item" data-menu="favority" bindtap="setMenu">
+                    <image wx:if="{{collectionStatus === '0'}}" class="item-image" src="/static/images/ico_favority_unselected.png" style="width: 25px; height: 38px;">
+                    </image>
+                    <image wx:else class="item-image" src="/static/images/ico_favority_selected.png" style="width: 25px; height: 38px;">
+                    </image>
+                </view>
+                <view class="left-item" data-menu="cart" bindtap="setMenu">
+                    <view class="item-image">
+                        <image class="image" src="/static/images/ico_cart_1.png" style="width: 28px; height: 38px;"></image>
+                        <view wx:if="{{cartCount > 0}}" class="cart-badge">{{cartCount}}</view>
+                    </view>
+                </view>
+            </view>
+            <view class="right">
+                <block wx:if="{{goodsStatus === '1'}}">
+                    <text wx:if="{{!isShowOption}}" class="right-content enable" data-show="show" bindtap="setShowOption">加入购物车</text>
+                    <text wx:elif="{{sizes.length !== 0 && activeId === 0}}" class="right-content disable">加入购物车</text>
+                    <text wx:else class="right-content enable" data-show="show" bindtap="setBuying">加入购物车</text>
+                </block>
+                <block wx:else><text class="right-content disable">商品已下架</text></block>
+            </view>
+        </view>
+    </view>
+    <view class="option-tool {{isShowOption ? 'collapsed' : ''}}">
+        <view class="header">
+            <image class="icon-cancel" src="/static/images/ico_cancel_1.png" data-show="hide" bindtap="setShowOption"></image>
+        </view>
+        <view class="option-tool-content">
+            <view class="goods-info">
+                <view class="left">
+                    <image class="image" src="{{optGoodsUri}}" lazy-load></image>
+                </view>
+                <view class="right">
+                    <view class="mt-5">
+                        <text class="option-name">{{optGoodsName}}</text>
+                    </view>
+                    <view class="mt-8">
+                        <text wx:if="{{sizes.length === 0}}" class="goods-price">¥{{filter.addComma(optSalePrice)}}</text>
+                        <text wx:if="{{activeId === 0 && sizes.length !== 0}}" class="goods-price">¥{{filter.addComma(optGoodsFirstPrice)}} ~ {{filter.addComma(optGoodsLastPrice)}}</text>
+                        <text wx:elif="{{activeId !== 0 && sizes.length !== 0}}" class="goods-price">¥{{filter.addComma(optSalePrice)}}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="option-info">
+                <text class="title-index">规格:</text>
+                <view class="option-menu">
+                    <block wx:for="{{sizes}}" wx:key="index">
+                        <view class="opt-item {{ activeId === item.id ? 'active' : '' }}" data-optionid="{{item.id}}" bindtap="setActiveOption">
+                            <text>{{item.sizeName}}</text>
+                        </view>
+                    </block>
+                </view>
+                <view class="mt-8" wx:if="{{isShowGoodsCount}}">
+                    <text class="title-index">购买数量:</text>
+                    <view class="goods-calc-content w100">
+                        <text class="weight-info">{{filter.addCommaTwo(optWeight)}}kg</text>
+                        <view class="quantity-info">
+                            <view class="item-content w30" bindtap="setMinus">
+                                <image class="minus-img" src="/static/images/ico_minus.png"></image>
+                            </view>
+                            <view class="item-content w40">
+                                <input class="input-num" type="number" maxlength="2" value="{{goodsCount}}" bindblur="inputBlue" bindinput="inputKey" />
+                            </view>
+                            <view class="item-content w30" bindtap="setPlus">
+                                <image class="plus-img" src="/static/images/ico_plus.png"></image>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<!-- 장바구니볼컴포넨트 섹션 -->
+<ball-item balls="{{balls}}" pos_x="{{pos_x}}" pos_y="45" ball_style="{{ball_style}}" bindendballevent="endBallEvent" />
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />
+<!-- 알림 다이얼로그 -->
+<notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />

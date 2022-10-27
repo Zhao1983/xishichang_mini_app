@@ -1,0 +1,53 @@
+/* components/menu-bar/index.wxss */
+.menu-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 55px;
+    z-index: 100;
+    border-top: 1px solid #e4e4e4;
+    background-color: #fff;
+    display: flex;
+}
+
+.menu-item {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    width: 20% !important;
+    border-right: 1px solid #e5e5e5;
+    background-color: #fff;
+}
+
+.menu-item:last-child {
+    border-right: none;
+}
+
+.menu-item .item {
+    position: relative;
+    width: 49px;
+    height: 41px;
+    margin-left: 10px;
+}
+
+.menu-item .item .item-image {
+    width: 49px;
+    height: 41px;
+}
+
+.menu-item .item .cart-badge {
+    position: absolute;
+    background-color: #cf000e;
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    top: -5px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

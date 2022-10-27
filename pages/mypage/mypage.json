@@ -1,0 +1,8 @@
+{
+    "usingComponents": {
+        "loading-bar": "/components/loading-bar/index",
+        "navigation-bar": "/components/weui-miniprogram/navigation-bar/navigation-bar",
+        "menu-bar": "/components/menu-bar/index"
+    },
+    "navigationStyle": "custom"
+}

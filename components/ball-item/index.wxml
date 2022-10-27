@@ -1,0 +1,6 @@
+<!--components/ball-item/index.wxml-->
+<view class="ball-container">
+    <view wx:if="{{balls.show}}" class="ball" animation="{{animBall}}" style="top: {{top}}px;">
+        <view class="inner" animation="{{animInner}}" style="left: {{left}}px;"></view>
+    </view>
+</view>

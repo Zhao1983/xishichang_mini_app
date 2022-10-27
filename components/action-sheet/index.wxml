@@ -1,0 +1,2 @@
+<!--components/action-sheet/index.wxml-->
+<action-sheet bindactiontap="setActionSheet" show="{{show}}" actions="{{menuGroup}}" bindclose="setCloseSheet" />

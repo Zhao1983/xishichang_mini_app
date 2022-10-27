@@ -1,0 +1,13 @@
+<!--pages/mypage/myinfo/phone_update/phone_update.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <image class="image-index" src="/static/images/ico_phone.png"></image>
+    <view class="text">
+        <text>已绑定手机号:</text>
+        <text class="ml-15">{{phone}}</text>
+    </view>
+    <navigator class="btn-confirm" open-type="redirect" url="/pages/mypage/myinfo/auth_update/auth_update">
+        <text>更换绑定</text>
+    </navigator>
+</view>

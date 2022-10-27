@@ -1,0 +1,36 @@
+<!--pages/goods/order_goods/order_goods.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container" style="padding-bottom: {{ isDeviceHeight }}px;">
+    <view wx:for="{{ cartItems }}" wx:for-item="shop" wx:key="index" class="order-content mb-15">
+        <view class="shop-info">
+            <image class="icon-shop" src="/static/images/ico_shop_1.png"></image>
+            <text class="shop-title">{{shop.shopName}}</text>
+        </view>
+        <view wx:for="{{shop.goods}}" wx:for-item="prod" wx:key="idx" class="goods-info">
+            <view class="image-content">
+                <image class="goods-image" src="{{prod.imgUri}}" lazy-load="{{true}}"></image>
+                <image wx:if="{{prod.goodsIconUrl}}" class="goods-icon" src="{{prod.goodsIconUrl}}"></image>
+                <image wx:if="{{prod.status === '0'}}" class="outside-image" src="/static/images/ico_outside.png"></image>
+            </view>
+            <view class="goods-content">
+                <view class="goods-title">{{prod.name}}</view>
+                <view wx:if="{{prod.sizeName !== ''}}" class="size-title">{{prod.sizeName}}</view>
+                <view class="price-content">
+                    <view>
+                        <text class="symbol">¥</text>
+                        <text class="price">{{filter.addComma(prod.salesPrice)}}</text>
+                        <text class="unit">/{{prod.unit}}</text>
+                        <text wx:if="{{prod.originalPrice !== 0}}" class="original-price ml-10">¥{{filter.addComma(prod.originalPrice)}}</text>
+                    </view>
+                    <view class="goods-quantity">x{{prod.num}}</view>
+                </view>
+                <view wx:if="{{prod.eventStatus === '1'}}" class="mt-5">
+                    <view class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                    <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

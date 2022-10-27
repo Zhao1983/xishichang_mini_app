@@ -1,0 +1,123 @@
+/**
+ * 3자리마다 콤마 추가
+ *
+ * @param value 콤마를 추가할 값
+ */
+
+var addComma = function (num) {
+    var thisNum = (num || 0).toString().split('.')
+    var num = thisNum[0]
+    var fuNum = thisNum[0]
+    var result = ''
+
+    if (fuNum < 0) {
+        num = num.slice(1)
+    }
+
+    while (num.length > 3) {
+        result = ',' + num.slice(-3) + result
+        num = num.slice(0, num.length - 3)
+    }
+
+    if (num) {
+        result = num + result
+    }
+
+    if (fuNum < 0) {
+        result = '-' + result
+    }
+
+    if (thisNum[1]) {
+        result = result + '.' + thisNum[1]
+    }
+
+    return result
+}
+
+var addCommaTwo = function (num) {
+    var thisNum = (num || 0).toString().split('.')
+    var num = thisNum[0]
+    var fuNum = thisNum[0]
+    var result = ''
+
+    if (fuNum < 0) {
+        num = num.slice(1)
+    }
+
+    while (num.length > 3) {
+        result = ',' + num.slice(-3) + result
+        num = num.slice(0, num.length - 3)
+    }
+
+    if (num) {
+        result = num + result
+    }
+
+    if (fuNum < 0) {
+        result = '-' + result
+    }
+
+    if (thisNum[1]) {
+        result = result + '.' + thisNum[1]
+    }
+
+    return parseFloat(result).toFixed(2)
+}
+
+/**
+ * 문자렬에서 콤마 제거
+ *
+ * @param value 콤마를 제거할 값
+ */
+var removeComma = function (value) {
+    var reg = getRegExp(',', 'g')
+    return parseInt(value.replace(reg, ''))
+}
+
+/**
+ * 문자렬 앞에 0 추가
+ *
+ * @param n 입력값
+ * @param width 문자렬 길이
+ */
+var numberPad = function (n, width) {
+    n = n + ''
+    return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n
+}
+
+/**
+ * 날자형식 초기화(YYYY-MM-DD hh-mm-ss)
+ * @param date
+ */
+var formatTime = function (date) {
+    var formateArr = ['Y', 'M', 'D', 'h', 'm', 's']
+    var returnArr = []
+
+    var date = getDate(number)
+    returnArr.push(date.getFullYear())
+    returnArr.push(formatNumber(date.getMonth() + 1))
+    returnArr.push(formatNumber(date.getDate()))
+
+    returnArr.push(formatNumber(date.getHours()))
+    returnArr.push(formatNumber(date.getMinutes()))
+    returnArr.push(formatNumber(date.getSeconds()))
+
+    returnArr.forEach(function (item, index) {
+        format = format.replace(formateArr[index], item)
+    })
+
+    return format
+}
+
+var formatNumber = function (n) {
+    n = n.toString()
+    return n[1] ? n : '0' + n
+}
+
+module.exports = {
+    addComma: addComma,
+    removeComma: removeComma,
+    numberPad: numberPad,
+    formatTime: formatTime,
+    addCommaTwo: addCommaTwo
+}

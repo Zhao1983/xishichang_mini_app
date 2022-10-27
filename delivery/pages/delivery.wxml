@@ -1,0 +1,43 @@
+<!--pages/mypage/delivery/delivery.wxml-->
+
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <view wx:if="{{isEmpty}}" class="empty-address">
+        <image class="empty-icon" src="/static/images/ico_gps_2.png"></image>
+        <view class="empty-text">没有获取到地址信息</view>
+    </view>
+    <view wx:for="{{deliveryData}}" wx:key="index" class="address-item">
+        <view class="row-1 mb-15" data-id="{{item.id}}" bindtap="setChangeAddress">
+            <view class="left">
+                <view class="title-profile mb-10">
+                    <text>{{ item.userName }}，{{ item.phoneNum }}</text>
+                </view>
+                <view class="title-address">
+                    <text>{{ item.province }} {{ item.city }} {{ item.country }} {{ item.address }} {{ item.houseNo }}</text>
+                </view>
+            </view>
+            <view class="right">
+                <image class="icon-arrow" src="/static/images/ico_right_1.png"></image>
+            </view>
+        </view>
+        <view class="row-2">
+            <view wx:if="{{item.isDefault === '1'}}" class="text-active">默认</view>
+            <view wx:else></view>
+            <view style="display: flex; align-items: center;">
+                <view class="text-other" data-id="{{item.id}}" bindtap="setDeleteAddress">删除</view>
+                <navigator class="text-other ml-25" url="/delivery/pages/delivery_info/delivery_info?deliveryid={{item.id}}">修改</navigator>
+            </view>
+        </view>
+    </view>
+    <navigator class="btn-add" url="/delivery/pages/delivery_info/delivery_info?deliveryid=0">+ 添加收货地址</navigator>
+</view>
+
+<!-- 메뉴툴 컴포넨트 -->
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" content="{{warningContent}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />

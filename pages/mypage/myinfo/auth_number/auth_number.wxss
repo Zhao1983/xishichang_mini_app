@@ -1,0 +1,50 @@
+/* pages/mypage/myinfo/auth_number/auth_number.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+    padding: 15px 20px;
+}
+
+.text-1 {
+    font-size: 16px;
+    color: #222222;
+    margin-bottom: 15px;
+}
+
+.text-2 {
+    font-size: 15px;
+    color: #626262;
+    margin-bottom: 40px;
+}
+
+.text-3 {
+    font-size: 13px;
+    color: #929292;
+    text-align: right;
+}
+
+.auth-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 25px;
+    margin-bottom: 15px;
+}
+
+.auth-content .auth-input {
+    width: calc(25% - 5px);
+    margin-right: 20px;
+    height: 100%;
+    text-align: center;
+    font-size: 18px;
+    color: #222222;
+    border-bottom: 1px solid #cecece;
+}
+
+.auth-content .auth-input:last-child {
+    margin-right: 0;
+}

@@ -1,0 +1,4 @@
+<!--components/loading-bar/index.wxml-->
+<view wx:if="{{isShowLoading}}" class="spinner_overay">
+    <view class="spinner"></view>
+</view>

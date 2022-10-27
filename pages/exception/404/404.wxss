@@ -1,0 +1,39 @@
+/* pages/exception/404/404.wxss */
+
+page {
+    background-color: #fff !important;
+    height: 100%;
+}
+
+.container {
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100% - 150px);
+}
+
+.image {
+    width: 240px;
+    height: 161px;
+}
+
+.btn-redirect {
+    background-color: #cf000e;
+    width: 108px;
+    height: 38px;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.text {
+    font-size: 16px;
+    color: #222222;
+    font-weight: bold;
+}

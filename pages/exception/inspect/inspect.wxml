@@ -1,0 +1,7 @@
+<!--pages/exception/inspect/inspect.wxml-->
+<navigation-bar background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<view class="container">
+    <image class="image" src="/static/images/image_inspect.png"></image>
+    <view class="text-1">系统升级维护中...</view>
+    <view class="text-2">{{reason}}</view>
+</view>

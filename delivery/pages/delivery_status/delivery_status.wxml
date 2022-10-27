@@ -1,0 +1,58 @@
+<!--pages/mypage/delivery/delivery_status/delivery_status.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <view class="delivery-info">
+        <view class="delivery-name">{{deliveryName}}</view>
+        <view class="delivery-number">
+            <text class="number-text">快递单号: {{deliveryNo}}</text>
+            <view class="btn-clipboard" bindtap="setClipboard">复制</view>
+        </view>
+    </view>
+    <view class="delivery-info">
+        <view class="delivery-item">
+            <view class="left-item">
+                <image class="delivery-image" src="/static/images/ico_delivery_3.png"></image>
+            </view>
+            <view class="right-item">
+                <view class="delivery-text mb-10">订单编号: {{ orderNo }}</view>
+                <view class="delivery-text">收货地址: {{ address }}</view>
+            </view>
+        </view>
+    </view>
+    <view class="delivery-info pb-0">
+        <view style="padding-bottom: {{ isDeviceHeight }}px;">
+            <block wx:for="{{tracks}}" wx:key="index">
+                <view class="track-item">
+                    <view class="left-item">
+                        <image wx:if="{{index === 0}}" class="point" src="/static/images/ico_point.png"></image>
+                        <image wx:else class="point" src="/static/images/ico_point_disable.png"></image>
+                        <view class="track-line"></view>
+                    </view>
+                    <view class="right-item">
+                        <block wx:if="{{index === 0}}">
+                            <view class="track-text mb-2 active">{{item.context}}</view>
+                            <view class="track-time active">{{ item.ftime }}</view>
+                        </block>
+                        <block wx:else>
+                            <view class="track-text mb-2">{{item.context}}</view>
+                            <view class="track-time">{{ item.ftime }}</view>
+                        </block>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>
+<view class="bottom-menu" style="height: {{ isDeviceHeight }}px;">
+    <view class="btn" bindtap="setReceiveOrder">确认收货</view>
+</view>
+
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" content="{{warningContent}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />
+<!-- 메뉴툴 컴포넨트 -->
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight + 15}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />

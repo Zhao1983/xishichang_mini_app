@@ -1,0 +1,7 @@
+<!--pages/exception/warning/warning.wxml-->
+<navigation-bar background="#f8f8f8" title="{{navTitle}}" back="{{false}}"></navigation-bar>
+<view class="container">
+    <image class="image" src="/static/images/image_user_warning.png"></image>
+    <view class="text-1">您的账户已被停用</view>
+    <view class="text-2">{{reason}}</view>
+</view>

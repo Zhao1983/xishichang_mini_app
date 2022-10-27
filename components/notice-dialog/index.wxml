@@ -1,0 +1,12 @@
+<!--components/notice-dialog/index.wxml-->
+<view wx:if="{{isShowDialog}}" class="notice-overlay">
+    <view class="notice-dialog">
+        <view class="notice-dialog-content">
+            <image class="notice-image" src="../../static/images/notice_back.png" lazy-load></image>
+            <view class="notice-option">
+                <text class="left-item" data-index="show" bindtap="setAction">今日内不在弹出</text>
+                <image class="right-item" src="../../static/images/ico_cancel_6.png" data-index="close" bindtap="setAction"></image>
+            </view>
+        </view>
+    </view>
+</view>

@@ -1,0 +1,44 @@
+<!--pages/mypage/favority/favority.wxml-->
+
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{false}}" rightBtn="{{isNavRightBtn}}" btnText="{{navBtnTitle}}" isRightBtnStatus="{{isShowDelete}}"
+    bindactiontap="setRightBtn">
+</navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view class="container" style="background-color: {{ isEmpty ? '#fff' : '#f5f6fd' }}; height: {{ heightContent }}px;">
+    <view wx:if="{{isEmpty}}" class="empty-favority">
+        <image class="image-empty" src="/static/images/ico_favority_2.png"></image>
+        <view class="text-1">
+            <text>没有收藏任何商品哦!</text>
+        </view>
+        <navigator class="btn-redirect" url="/pages/main/main" open-type="reLaunch">
+            <text>逛一逛</text>
+        </navigator>
+    </view>
+    <view class="favority-content" style="padding-bottom: {{ isDeviceHeight + 15 }}px;">
+        <block wx:for="{{favorityData}}" wx:key="index">
+            <product-horizontal-item wx:if="{{item.goodsStatus === '1'}}" shopId="{{item.shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}"
+                goodsIconName="{{item.goodsIconName}}" goodsVideo="{{item.goodsVideo}}" goodsUnit="{{item.goodsUnit}}" goodsIntro="{{item.goodsIntro}}" salesPrice="{{item.salesPrice}}"
+                shopName="{{item.shopName}}" originalPrice="{{item.originalPrice}}" eventStatus="{{item.eventStatus}}" sizeStatus="{{item.sizeStatus}}" sizeId="{{item.sizeId}}" view=""
+                isShowDelete="{{isShowDelete}}" balls="{{balls}}" bindballevent="ballEvent" bindselproduct="setSelectGoods" />
+        </block>
+    </view>
+</view>
+<view wx:if="{{isShowDelete}}" class="btn-delete {{isActiveDelete ? 'active' : ''}}" style="height: {{isDeviceHeight - 15}}px;" bindtap="{{isActiveDelete ? 'setDeleteGoods' : ''}}">删除{{isActiveDelete ? '(' +
+    delCount + ')' : ''}}</view>
+
+<!-- 장바구니, 메뉴아이콘 섹션 -->
+<view class="cart-position" animation="{{animateCart}}" style="bottom: {{isDeviceHeight}}px;" bindtap="redirectCart">
+    <view class="cart">
+        <image class="cart-icon" src="/static/images/ico_cart_2.png"></image>
+        <view wx:if="{{cartCount > 0}}" class="cart-badge">
+            <text class="text">{{cartCount}}</text>
+        </view>
+    </view>
+</view>
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 장바구니볼컴포넨트 섹션 -->
+<ball-item balls="{{balls}}" pos_x="25" pos_y="{{isDeviceHeight + 10}}" ball_style="{{ball_style}}" bindendballevent="endBallEvent" />
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />

@@ -1,0 +1,16 @@
+<!--pages/mypage/myinfo/auth_update/auth_update.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <input class="input-phone" type="number" value="{{phone}}" maxlength="11" placeholder="请输入手机号" data-kind="phone" bindinput="setInputValue" />
+    <view class="auth-input">
+        <input class="auth" type="number" maxlength="4" value="{{authCode}}" placeholder="请输入验证码" data-kind="auth" bindinput="setInputValue" />
+        <view wx:if="{{phone.length === 11 && !isSubmitCode}}" class="auth-btn active" bindtap="setSendCode">发送验证码</view>
+        <view wx:elif="{{isSubmitCode}}" class="auth-btn">{{second}}s后重新发送</view>
+        <view wx:else class="auth-btn">发送验证码</view>
+    </view>
+    <view wx:if="{{phone.length === 11 && authCode.length === 4}}" class="btn-confirm active" bindtap="setUpdatePhoneInfo">立即绑定</view>
+    <view wx:else class="btn-confirm">立即绑定</view>
+</view>
+
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />

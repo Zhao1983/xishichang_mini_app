@@ -1,0 +1,51 @@
+<!--pages/mypage/help/help.wxml-->
+
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <view class="help-row">
+        <view>
+            <text class="help-txt-1">在线客服 (服务时间：早 8:30 ~ 晚 22:00)</text>
+        </view>
+        <button open-type="contact" style="display: flex; align-items: center; width: 68px; background-color: #fff; padding: 0; margin: 0; font-weight: normal;">
+            <text class="help-txt-2">点击咨询</text>
+            <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+        </button>
+        <!-- <navigator url="/pages/service/service" style="display: flex; align-items: center;">
+            <text class="help-txt-2">点击咨询</text>
+            <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+        </navigator> -->
+    </view>
+    <view class="help-row mb-15">
+        <view>
+            <text class="help-txt-1">电话客服 (服务时间：早 8:30 ~ 晚 22:00)</text>
+        </view>
+        <view bindtap="makePhoneCall" style="display: flex; align-items: center;">
+            <text class="help-txt-2">点击拨打</text>
+            <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+        </view>
+    </view>
+    <view class="help-row">
+        <view>
+            <text class="help-txt-1">账户问题</text>
+        </view>
+        <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+    </view>
+    <view class="help-row">
+        <view>
+            <text class="help-txt-1">订单问题</text>
+        </view>
+        <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+    </view>
+    <view class="help-row">
+        <view>
+            <text class="help-txt-1">配送费说明</text>
+        </view>
+        <image class="icon-arrow ml-10" src="/static/images/ico_right_2.png"></image>
+    </view>
+</view>
+
+<view class="menu-position" style="bottom: 30px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />

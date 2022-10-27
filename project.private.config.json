@@ -1,0 +1,22 @@
+{
+    "condition": {
+        "miniprogram": {
+            "list": [
+                {
+                    "name": "",
+                    "pathName": "pages/main/main",
+                    "query": "",
+                    "launchMode": "default",
+                    "scene": 1089,
+                    "partialCompile": {
+                        "enabled": false,
+                        "pages": [
+                            "delivery/pages/delivery_status/delivery_status"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "description": "Project configuration file, more information: https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html"
+}

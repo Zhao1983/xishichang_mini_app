@@ -1,0 +1,60 @@
+<!--pages/search/search_result/search_result.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view class="container">
+    <view class="search-tool" style="top: {{heightNavigation}}px;">
+        <view class="search-input">
+            <input class="input" confirm-type="search" value="{{tempSearchWord}}" placeholder="请输入关键字" bindinput="setInputWord" bindconfirm="setSearchResult" />
+            <image class="icon-search" src="/static/images/ico_search.png"></image>
+            <image wx:if="{{tempSearchWord !== ''}}" class="icon-cancel" src="/static/images/ico_cancel_2.png" bindtap="setClearSearchWord"></image>
+        </view>
+    </view>
+    <view class="search-content" style="padding-bottom: {{paddingContent}}px;">
+        <block wx:if="{{isEmptyResult}}">
+            <view class="result-empty-content">
+                <image class="icon-image" src="/static/images/ico_search.png"></image>
+                <view>
+                    <text class="txt-1">没有找到与“</text>
+                    <text class="txt-2">{{searchWord}}</text>
+                    <text class="txt-1">”相关的商品</text>
+                </view>
+            </view>
+        </block>
+        <block wx:else>
+            <view class="result-count">商品 ({{filter.addComma(totalNum)}})</view>
+            <view class="result-content">
+                <view class="goods-item">
+                    <block wx:for="{{goodsEvenData}}" wx:key="index">
+                        <product-vertical-item shopId="{{item.shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}" goodsIconName="{{item.goodsIconName}}"
+                            goodsVideo="{{item.goodsVideo}}" goodsStatus="{{item.goodsStatus}}" goodsUnit="{{item.goodsUnit}}" eventStatus="{{item.eventStatus}}" goodsIntro="{{item.goodsIntro}}"
+                            salesPrice="{{item.salesPrice}}" shopName="{{item.shopName}}" originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}" sizeId="{{item.sizeId}}"
+                            searchWord="{{searchWord}}" view="" balls="{{balls}}" bindballevent="ballEvent" />
+                    </block>
+                </view>
+                <view class="goods-item">
+                    <block wx:for="{{goodsOddData}}" wx:key="index">
+                        <product-vertical-item shopId="{{item.shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}" goodsIconName="{{item.goodsIconName}}"
+                            goodsVideo="{{item.goodsVideo}}" goodsStatus="{{item.goodsStatus}}" goodsUnit="{{item.goodsUnit}}" eventStatus="{{item.eventStatus}}" goodsIntro="{{item.goodsIntro}}"
+                            salesPrice="{{item.salesPrice}}" shopName="{{item.shopName}}" originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}" sizeId="{{item.sizeId}}"
+                            searchWord="{{searchWord}}" view="" balls="{{balls}}" bindballevent="ballEvent" />
+                    </block>
+                </view>
+            </view>
+        </block>
+        <view style="width: 100%; height: 52px;">
+            <loading-more type="circle" show="{{loadingMore}}"></loading-more>
+            <view wx:if="{{isMoreText}}" class="more-detail">
+                <text class="text">商品陆续上架中, 合作热线 0433-2651000</text>
+            </view>
+        </view>
+    </view>
+</view>
+<!-- 알림 다이얼로그 -->
+<notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="请输入关键字" show="{{isShowWarningDialog}}" bindbuttontap="setWarningDialog" buttons="{{warningBtn}}" />
+<!-- 장바구니볼컴포넨트 섹션 -->
+<ball-item balls="{{balls}}" pos_x="{{pos_x}}" pos_y="40" ball_style="{{ball_style}}" bindendballevent="endBallEvent" />
+<scroll-top isShow="{{isScrollTop}}" bindtopevent="setScrollTop" />
+<menu-bar isAnimate="{{isShowControlMenu}}" activeUrl="search_result" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />

@@ -1,0 +1,11 @@
+{
+    "usingComponents": {
+        "loading-bar": "/components/loading-bar/index",
+        "navigation-bar": "/components/weui-miniprogram/navigation-bar/navigation-bar",
+        "shop-item": "/components/shop-item/index",
+        "ball-item": "/components/ball-item/index",
+        "custom-toast": "/components/custom-toast/index",
+        "notice-dialog": "/components/notice-dialog/index"
+    },
+    "navigationStyle": "custom"
+}

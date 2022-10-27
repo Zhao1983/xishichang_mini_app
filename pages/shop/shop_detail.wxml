@@ -1,0 +1,96 @@
+<!--pages/shop/shop_detail.wxml-->
+<navigation-bar background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<image class="container-backgroud" src="{{bgImgUri}}"></image>
+<view class="shop-container" style="height: {{ isShowSheet ? 'calc(100% - 300px)' : 'auto' }}; overflow: {{ isShowSheet ? 'hidden' : 'auto' }};">
+    <view class="shop-header">
+        <image class="top-line" src="/static/images/shop_line.png"></image>
+        <image class="shop-header-bg" src="{{bannerUri}}"></image>
+        <view class="shop-info">
+            <view class="info">
+                <image class="year-icon" src="/static/images/year_icon.png"></image>
+                <text wx:if="{{age < 1}}" class="info-text ml-3">新开店铺</text>
+                <text wx:elif="{{age >= 1 && age < 5}}" class="info-text ml-3">{{age}}年店铺</text>
+                <text wx:else class="info-text ml-3">{{age}}年老店</text>
+                <text class="info-text ml-10">销量 :</text>
+                <block wx:for="{{starNum}}" wx:for-item="item" wx:key="index">
+                    <image class="icon-diamond" src="/static/images/ico_diamond.png"></image>
+                </block>
+                <image class="icon" src="{{shopIcon}}"></image>
+            </view>
+            <view wx:if="{{collectionStatus === '0'}}" class="shop-like" bindtap="setCollection">
+                <view class="text-center">
+                    <image class="heart" src="/static/images/shop_heart_unselected.png"></image>
+                </view>
+                <text class="text text-center">关注</text>
+            </view>
+            <view wx:else class="shop-like" bindtap="setCollection">
+                <view class="text-center">
+                    <image class="heart" src="/static/images/shop_heart_selected.png"></image>
+                </view>
+                <text class="text text-center">已关注</text>
+            </view>
+        </view>
+    </view>
+    <view class="shop-content">
+        <view class="info">
+            <view class="box">
+                <text class="text">全部商品({{ totalNum }})</text>
+            </view>
+            <view class="box" bindtap="setViewGoodsList">
+                <image class="icon" src="/static/images/ico_list.png"></image>
+            </view>
+        </view>
+        <view class="content" style="flex-direction: {{isViewKind === false ? 'column' : 'row'}};">
+            <block wx:if="{{isViewKind}}">
+                <view class="goods-item">
+                    <block wx:for="{{goodsEvenData}}" wx:key="index">
+                        <product-vertical-item shopId="{{shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}" goodsIconName="{{item.goodsIconName}}"
+                            goodsVideo="{{item.goodsVideo}}" goodsUnit="{{item.goodsUnit}}" goodsIntro="{{item.goodsIntro}}" eventStatus="{{item.eventStatus}}" salesPrice="{{item.salesPrice}}"
+                            shopName="{{shopName}}" originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}" sizeId="{{item.sizeId}}" searchWord="" view="" balls="{{balls}}"
+                            bindballevent="ballEvent" />
+                    </block>
+                </view>
+                <view class="goods-item">
+                    <block wx:for="{{goodsOddData}}" wx:key="index">
+                        <product-vertical-item shopId="{{shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}" goodsIconName="{{item.goodsIconName}}"
+                            goodsVideo="{{item.goodsVideo}}" goodsUnit="{{item.goodsUnit}}" goodsIntro="{{item.goodsIntro}}" eventStatus="{{item.eventStatus}}" salesPrice="{{item.salesPrice}}"
+                            shopName="{{shopName}}" originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}" sizeId="{{item.sizeId}}" searchWord="" view="" balls="{{balls}}"
+                            bindballevent="ballEvent" />
+                    </block>
+                </view>
+            </block>
+            <block wx:else>
+                <block wx:for="{{goodsData}}" wx:key="index">
+                    <product-horizontal-item shopId="{{shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}" goodsIconName="{{item.goodsIconName}}"
+                        goodsVideo="{{item.goodsVideo}}" goodsUnit="{{item.goodsUnit}}" goodsIntro="{{item.goodsIntro}}" salesPrice="{{item.salesPrice}}" shopName="{{shopName}}"
+                        originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}" eventStatus="{{item.eventStatus}}" sizeId="{{item.sizeId}}" view="" balls="{{balls}}" bindballevent="ballEvent" />
+                </block>
+            </block>
+        </view>
+        <view style="width: 100%; height: 52px;">
+            <loading-more type="circle" show="{{loadingMore}}"></loading-more>
+            <view wx:if="{{isMoreText}}" class="more-detail">
+                <text class="text">商品陆续上架中, 合作热线 0433-2651000</text>
+            </view>
+        </view>
+    </view>
+</view>
+
+<!-- 장바구니, 메뉴아이콘 섹션 -->
+<view class="cart-position" animation="{{animateCart}}" style="bottom: 30px;" bindtap="redirectCart">
+    <view class="cart">
+        <image class="cart-icon" src="/static/images/ico_cart_2.png"></image>
+        <view wx:if="{{cartCount > 0}}" class="cart-badge">
+            <text class="text">{{cartCount}}</text>
+        </view>
+    </view>
+</view>
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: 30px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 장바구니볼컴포넨트 섹션 -->
+<ball-item balls="{{balls}}" pos_x="30" pos_y="50" ball_style="{{ball_style}}" bindendballevent="endBallEvent" />
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />

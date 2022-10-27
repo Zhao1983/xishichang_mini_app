@@ -1,0 +1,44 @@
+/* pages/mypage/order/receive/receive.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+    text-align: center;
+}
+
+.icon-success {
+    width: 90px;
+    height: 90px;
+    margin-top: 30%;
+}
+
+.text-1 {
+    font-size: 20px;
+    color: #222222;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.text-2 {
+    font-size: 14px;
+    color: #8a8a8a;
+    margin-top: 20px;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.btn-main {
+    width: 137px;
+    height: 35px;
+    color: #6b6a6a;
+    font-size: 16px;
+    border: 1px solid #dedede;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}

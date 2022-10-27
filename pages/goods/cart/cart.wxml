@@ -1,0 +1,157 @@
+<!--pages/goods/cart/cart.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{false}}" rightBtn="{{isNavRightBtn}}" btnText="{{navBtnTitle}}" bindactiontap="setRightBtn">
+</navigation-bar>
+<view class="container" style="background-color: {{ isCartEmpty ? '#fff' : '#f5f6fd' }}; height: {{ heightContent }}px;">
+    <view wx:if="{{isCartEmpty}}" class="empty-cart">
+        <image class="image-empty" src="/static/images/ico_cart_back.png"></image>
+        <view class="text-1">
+            <text>购物车空空如也</text>
+        </view>
+        <view class="text-2">
+            <text>赶紧挑一些中意的商品吧</text>
+        </view>
+        <navigator class="btn-redirect" url="/pages/main/main" open-type="reLaunch">
+            <text>逛一逛</text>
+        </navigator>
+    </view>
+    <view wx:else class="cart-content" style="padding-bottom: {{ isDeviceHeight + 15 }}px;">
+        <!-- 장바구니 알림내용 -->
+        <view wx:if="{{freeStatus === '1'}}" class="cart-item">
+            <view class="notice-row">
+                <view class="notice-mark">
+                    <text>活动</text>
+                </view>
+                <view class="notice-text">
+                    <text>全场满39元可免运费 (同城:重量15kg 距离2 km以内；外地:冷鲜商品除外)</text>
+                </view>
+            </view>
+            <view class="notice-row">
+                <view class="notice-left">
+                    <image class="icon-speaker" src="/static/images/ico_speaker.png"></image>
+                </view>
+                <view class="notice-right">
+                    <marquee-view repeat="3" duration="10" text="请慎重选购商品，超过15kg延吉市内可能无法配送。" font_color="#ffb733" font_size="12" />
+                </view>
+            </view>
+        </view>
+        <!-- 무료배송상태 알림 -->
+        <view wx:if="{{freeShippingStatus === '1'}}" class="cart-item">
+            <view class="notice-row">
+                <view class="notice-mark-1">
+                    <text>免运费活动</text>
+                </view>
+                <view class="notice-text-1">
+                    <text>全场满 {{filter.addComma(freeShippingNeededPrice)}} 元免运费</text>
+                </view>
+            </view>
+        </view>
+        <block wx:for="{{cartItems}}" wx:for-item="shop" wx:key="index">
+            <view class="cart-item">
+                <view class="cart-row">
+                    <view class="cart-left-content">
+                        <label class="radio">
+                            <radio value="" checked="{{shop.checked}}" color="#cf000e" data-shopid="{{shop.shopId}}" bindtap="setShopSelect" />
+                        </label>
+                    </view>
+                    <view class="cart-right-content">
+                        <view class="shop-info">
+                            <image class="shop-icon" src="/static/images/ico_shop_1.png"></image>
+                            <view class="shop-title">{{shop.shopName}}</view>
+                            <image class="shop-arrow" src="/static/images/ico_right_1.png"></image>
+                        </view>
+                    </view>
+                </view>
+                <block wx:for="{{shop.goods}}" wx:for-item="prod" wx:key="idx">
+                    <view class="cart-row">
+                        <view class="cart-left-content">
+                            <label class="radio">
+                                <radio value="" checked="{{prod.checked}}" color="#cf000e" data-shopid="{{shop.shopId}}" data-prodid="{{prod.id}}" bindtap="setGoodsSelect" />
+                            </label>
+                        </view>
+                        <view class="cart-right-content">
+                            <view class="goods-content">
+                                <navigator class="image-content" url="/pages/goods/goods_detail?shopid={{shop.shopId}}&productid={{prod.goodsId}}">
+                                    <image class="goods-image" src="{{prod.imgUri}}" lazy-load="{{true}}"></image>
+                                    <image wx:if="{{prod.goodsIconUrl}}" class="goods-icon" src="{{prod.goodsIconUrl}}"></image>
+                                    <image wx:if="{{prod.status === '0'}}" class="outside-image" src="/static/images/ico_outside.png"></image>
+                                </navigator>
+                                <view class="info-content">
+                                    <navigator class="goods-title" url="/pages/goods/goods_detail?shopid={{shop.shopId}}&productid={{prod.goodsId}}">{{prod.name}}</navigator>
+                                    <navigator wx:if="{{prod.sizeName !== ''}}" class="size-title" url="/pages/goods/goods_detail?shopid={{shop.shopId}}&productid={{prod.goodsId}}">{{prod.sizeName}}</navigator>
+                                    <view class="price-content">
+                                        <navigator class="price-info" url="/pages/goods/goods_detail?shopid={{shop.shopId}}&productid={{prod.goodsId}}">
+                                            <view wx:if="{{prod.originalPrice !== 0}}" class="original-price">¥{{filter.addComma(prod.originalPrice)}}</view>
+                                            <view>
+                                                <text class="symbol">¥</text>
+                                                <text class="price">{{filter.addComma(prod.salesPrice)}}</text>
+                                                <text class="unit">/{{prod.unit}}</text>
+                                            </view>
+                                        </navigator>
+                                        <view wx:if="{{!isShowEdit}}" class="quantity-content">
+                                            <view class="goods-calc-content mt-0">
+                                                <text class="weight-info">{{filter.addCommaTwo(prod.weight)}}kg</text>
+                                                <view class="quantity-info" style="height: 25px;">
+                                                    <view class="item-content w30" data-shopid="{{shop.shopId}}" data-prodid="{{prod.id}}" bindtap="setMinus">
+                                                        <image class="minus-img" src="/static/images/ico_minus.png"></image>
+                                                    </view>
+                                                    <view class="item-content w40">
+                                                        <input class="input-num" type="number" maxlength="2" value="{{prod.num}}" data-shopid="{{shop.shopId}}" data-prodid="{{prod.id}}" bindblur="inputBlue"
+                                                            bindinput="inputKey" />
+                                                    </view>
+                                                    <view class="item-content w30" data-shopid="{{shop.shopId}}" data-prodid="{{prod.id}}" bindtap="setPlus">
+                                                        <image class="plus-img" src="/static/images/ico_plus.png"></image>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                    <view wx:if="{{prod.eventStatus === '1'}}" class="mt-5">
+                                        <view class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                                        <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+        </block>
+    </view>
+</view>
+<view wx:if="{{!isCartEmpty}}" class="cart-bottom-menu" style="height: {{ isDeviceHeight }}px;">
+    <view class="left-menu">
+        <label class="radio">
+            <radio value="" checked="{{isCheckAll}}" color="#cf000e" bindtap="setSelectAll" />
+            <text class="txt-index">全选</text>
+        </label>
+    </view>
+    <view class="middle-menu">
+        <block wx:if="{{!isShowEdit}}">
+            <view>
+                <text class="txt-1">合计 : </text>
+                <text class="txt-symbol">¥</text>
+                <text class="txt-price">{{filter.addComma(totalPrice)}}</text>
+            </view>
+            <view class="mt-1">
+                <text wx:if="{{totalPriceByEvent < freeShippingNeededPrice}}" class="txt-2">免运费还差 {{ filter.addComma(freeShippingNeededPrice - totalPriceByEvent) }} 元</text>
+                <text wx:elif="{{freePackageNeededPrice !== 0 && freeShippingNeededPrice === 0}}" class="txt-2">(总重量:{{filter.addCommaTwo(totalWeight)}}kg)</text>
+                <text wx:elif="{{freePackageNeededPrice === 0 && freeShippingNeededPrice === 0}}" class="txt-2">(总重量:{{filter.addCommaTwo(totalWeight)}}kg)</text>
+                <text wx:else class="txt-2">免运费</text>
+            </view>
+        </block>
+    </view>
+    <view class="right-menu">
+        <view wx:if="{{!isShowEdit}}" class="btn-order {{isActiveStatus ? 'active' : ''}}" bindtap="setOrder">去结算({{totalGoods}})</view>
+        <view wx:else class="btn-delete {{isActiveStatus ? 'active' : ''}}" bindtap="setDelete">删除</view>
+    </view>
+</view>
+
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight + 10}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="确定要删除商品吗？" show="{{isShowWarningDialog}}" bindbuttontap="setDeleteConfirm" buttons="{{warningBtn}}" />

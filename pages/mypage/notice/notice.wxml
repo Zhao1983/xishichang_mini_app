@@ -1,0 +1,25 @@
+<!--pages/mypage/notice/notice.wxml-->
+
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view class="container">
+    <navigator class="notice-row" url="/pages/mypage/notice/notice_detail/notice_detail">
+        <view class="pos-re">
+            <image class="icon-notice" src="/static/images/ico_alarm.png"></image>
+            <text wx:if="{{noticeCount > 0}}" class="icon-cnt">{{noticeCount}}</text>
+        </view>
+        <view class="ml-10">
+            <view class="notice-txt-1 mb-10">系统消息</view>
+            <view class="notice-txt-2">进来看看吧</view>
+        </view>
+    </navigator>
+    <button class="notice-row" open-type="contact" style="width: 100%; background-color: #fff; text-align: left; font-weight: normal;">
+        <image class="icon-notice" src="/static/images/ico_service_2.png"></image>
+        <view class="ml-10">
+            <view class="notice-txt-1 mb-10">在线客服</view>
+            <view class="notice-txt-2">早 8:30 ~ 晚 22:00</view>
+        </view>
+    </button>
+</view>
+
+<menu-bar activeUrl="search_result" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />

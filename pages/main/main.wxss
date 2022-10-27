@@ -1,0 +1,177 @@
+/* pages/main/main.wxss */
+.container {
+    max-width: 100%;
+    position: relative;
+}
+
+.main-header {
+    position: relative;
+}
+
+.header-background {
+    width: 100%;
+    height: 285px;
+}
+
+.main-content {
+    top: 143px;
+    left: 0;
+    right: 0;
+    height: 100%;
+    z-index: 100;
+    position: absolute;
+}
+
+.search-content {
+    padding: 0px 15px;
+}
+
+.search-content .search-input {
+    height: 38px;
+    display: flex;
+    align-items: center;
+    border-radius: 50px;
+    padding-left: 12px;
+    border: 1px solid #ffca2f;
+    background-color: #fff;
+    justify-content: flex-start;
+}
+
+.search-content .search-input .icon {
+    width: 17px;
+    height: 17px;
+}
+
+.search-content .search-input .text {
+    font-size: 15px;
+    color: #b1b1b1;
+    padding-left: 10px;
+}
+
+.tag-content {
+    padding: 10px 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100%;
+    margin-bottom: 5px;
+    height: 26px;
+}
+
+.tag-content .item {
+    margin-right: 10px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    background-color: #e3b5bf;
+    height: 26px;
+    padding: 0px 9px;
+}
+
+.tag-content .item:last-child {
+    margin-right: 0;
+}
+
+.tag-content .item text {
+    font-size: 12px;
+    color: #1f1f1f;
+}
+
+.banner-content {
+    height: 31vw;
+}
+
+.banner-content swiper {
+    height: 100%;
+}
+
+.banner-content swiper swiper-item {
+    display: flex;
+    justify-content: center;
+}
+
+.banner-content image {
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    margin: 0px 15px;
+}
+
+.type-content {
+    padding: 15px;
+}
+
+.type-content .type-detail {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    height: 178px;
+}
+
+.type-detail swiper {
+    height: 100%;
+}
+
+.type-content .type-item {
+    width: 20%;
+    display: inline-block;
+    text-align: center;
+    padding: 7px 0px;
+}
+
+.type-content .type-item .image {
+    width: 45px;
+    height: 45px;
+}
+.type-content .type-item .text {
+    font-size: 13px;
+    color: #525252;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-top: 5px;
+}
+
+.shop-content {
+    padding: 0px 15px 90px 15px;
+}
+
+.shop-title {
+    display: flex;
+    align-items: center;
+}
+
+.shop-title .title-detail {
+    width: 40%;
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+    align-items: center;
+}
+
+.shop-title .title-detail .title-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.shop-title .title-detail .title-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-left: 6px;
+}
+
+.shop-title .icon-detail {
+    display: flex;
+    justify-content: flex-end;
+    width: 60%;
+}
+
+.shop-title .icon-detail .icon {
+    width: 64px;
+    height: 47px;
+}
+
+.content-desc {
+    font-size: 12px;
+    color: #222222;
+    text-align: center;
+}

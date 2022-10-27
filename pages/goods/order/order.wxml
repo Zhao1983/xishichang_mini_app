@@ -1,0 +1,467 @@
+<!--pages/goods/order/order.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view wx:if="{{isShowOverlay}}" class="bg-mask" bindtap="setHideOverlay"></view>
+<view class="container" style="padding-bottom: {{ isDeviceHeight }}px;">
+    <view class="order-top">
+        <!-- 시장 마감시간전 경고메세지 부분 -->
+        <view wx:if="{{isLimitTime}}" class="order-warning">
+            <image class="icon" src="/static/images/ico_info_1.png"></image>
+            <view class="warning-txt">如现在支付订单, 我们将在最近的工作时间内安排发货哟</view>
+        </view>
+        <view class="order-tab">
+            <view style="text-align: {{isTabKind === '0' ? 'left' : 'right'}}; height: 100%;">
+                <image wx:if="{{isTabKind === '0'}}" class="image-tab" src="/static/images/btn_tab_left.png"></image>
+                <image wx:else class="image-tab" src="/static/images/btn_tab_right.png"></image>
+            </view>
+            <view class="order-tab-text">
+                <view class="text-kind {{isTabKind === '0' ? 'active' : ''}}" data-kind="0" bindtap="setTabKind">配送</view>
+                <view class="text-kind {{isTabKind === '1' ? 'active' : ''}}" data-kind="1" bindtap="setTabKind">到店自取</view>
+            </view>
+        </view>
+        <view class="order-top-detail {{isTabKind === '0' ? 'right' : 'left'}}">
+            <!-- 택배/배달 탭 -->
+            <block wx:if="{{isTabKind === '0'}}">
+                <navigator class="addr-info" url="/delivery/pages/delivery?param={{paramCart}}">
+                    <view class="address">
+                        <block wx:if="{{deliveryId === 0}}">
+                            <text class="txt-1">选择收货地址</text>
+                        </block>
+                        <block wx:else>
+                            <text class="txt-1">{{provinceName}} {{cityName}} {{countryName}} {{address}} {{houseNo}}</text>
+                            <text class="txt-2"> {{userName}} {{userPhone}}</text>
+                        </block>
+                    </view>
+                    <view class="arrow">
+                        <image class="image-arrow" src="/static/images/ico_right_2.png"></image>
+                    </view>
+                </navigator>
+                <image src="/static/images/order_delivery_line.png" style="width: 100%; height: 4px; margin-left: -5px; margin-bottom: 15px;"></image>
+                <view wx:if="{{deliveryStatus === '0'}}" class="title-1">很抱歉，当前《收货地址》暂时无法提供配送</view>
+                <view wx:if="{{type === 'runner'}}" class="title-2">跑腿配送</view>
+                <view wx:else class="title-2">快递配送</view>
+            </block>
+            <!-- 시장 직접 주문 탭 -->
+            <block wx:else>
+                <view class="self-info">
+                    <view class="self-title">延吉西市场一楼 电商服务台</view>
+                    <view class="self-title mt-5">电话:0433-265-1000</view>
+                    <view class="self-time-info">
+                        <view class="time">
+                            <view class="txt-1 mb-10">自取时间</view>
+                            <view bindtap="setShowSelfTimeTool">
+                                <text class="txt-2">{{setTime}}</text>
+                                <image class="arrow-1 ml-5" src="/static/images/ico_right_2.png"></image>
+                            </view>
+                        </view>
+                        <view class="phone-info">
+                            <view class="txt-1 mb-3">预留电话</view>
+                            <view>
+                                <input class="memo-input" type="number" value="{{selfPhone}}" maxlength="11" data-kind="selfphone" bindinput="setInputValue" />
+                            </view>
+                        </view>
+                    </view>
+                    <view class="self-agree">
+                        <label class="radio">
+                            <radio value="" checked="{{isSelfAgree}}" color="#cf000e" bindtap="checkSelfAgree" />
+                            <text class="txt-1">同意</text>
+                        </label>
+                        <text class="txt-2">《到店自取服务协议》</text>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+    <!-- <view class="order-comment">
+        <text>部分地区疫情防控影响快递时效，购冷鲜商品请理性消费</text>
+    </view> -->
+    <!-- 배달, 직접 시장에서의 구매인 경우 점포별 주문상품 리스트 -->
+    <block wx:if="{{ deliveryItems.length === 0 && !freeItems[0] && !eventItems }}">
+        <view class="order-content">
+            <view wx:for="{{cartItems}}" wx:for-item="shop" wx:key="index" class="order-row">
+                <view class="shop-info">
+                    <image class="icon-shop" src="/static/images/ico_shop_1.png"></image>
+                    <text class="shop-title">{{shop.shopName}}</text>
+                </view>
+                <view wx:for="{{shop.goods}}" wx:for-item="prod" wx:key="idx" class="goods-info">
+                    <view class="image-content">
+                        <image class="goods-image" src="{{prod.imgUri}}" lazy-load="{{true}}"></image>
+                        <image wx:if="{{prod.goodsIconUrl}}" class="goods-icon" src="{{prod.goodsIconUrl}}"></image>
+                        <image wx:if="{{prod.status === '0'}}" class="outside-image" src="/static/images/ico_outside.png"></image>
+                    </view>
+                    <view class="goods-content">
+                        <view class="goods-title">{{prod.name}}</view>
+                        <view wx:if="{{prod.sizeName !== ''}}" class="size-title">{{prod.sizeName}}</view>
+                        <view class="price-content">
+                            <view>
+                                <text class="symbol">¥</text>
+                                <text class="price">{{filter.addComma(prod.salesPrice)}}</text>
+                                <text class="unit">/{{prod.unit}}</text>
+                                <text wx:if="{{prod.originalPrice !== 0}}" class="original-price ml-10">¥{{filter.addComma(prod.originalPrice)}}</text>
+                            </view>
+                            <view class="goods-quantity">x{{prod.num}}</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </block>
+    <!-- 택배인 경우 택배회사별 주문상품 리스트 -->
+    <block wx:else>
+        <!-- 유료배송인 경우(이전 론리)-->
+        <view wx:for="{{deliveryItems}}" wx:key="index" class="order-content">
+            <view class="order-goods-content">
+                <view class="content-header">
+                    <!-- 유료배송인 경우 -->
+                    <view wx:if="{{freeShippingStatus === '0'}}" class="left-item">
+                        <image wx:if="{{item.deliveryType === 2}}" class="icon-1" src="/static/images/ico_air.png"></image>
+                        <image wx:else class="icon-2" src="/static/images/ico_delivery_4.png"></image>
+                        <image wx:if="{{item.deliveryCode === 'jtexpress'}}" class="ml-3" src="/static/images/ico_delivery_company_3.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'yunda'}}" class="ml-3" src="/static/images/ico_delivery_company_1.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'youzhengguonei'}}" class="ml-3" src="/static/images/ico_delivery_company_2.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'ems'}}" class="ml-3" src="/static/images/ico_delivery_company_2.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'ems_2'}}" class="ml-3" src="/static/images/ico_delivery_company_2.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'shunfeng'}}" class="ml-3" src="/static/images/ico_delivery_company_5.png" style="width: 40px; height: 14px;"></image>
+                        <image wx:elif="{{item.deliveryCode === 'jingdongkuaiyun'}}" class="ml-3" src="/static/images/ico_delivery_company_6.png" style="width: 40px; height: 14px;"></image>
+                        <text class="title ml-3">{{ item.deliveryName }}</text>
+                        <text class="sub-title ml-2">(包裹{{ (index + 1) }})</text>
+                    </view>
+                    <view wx:else class="left-item">
+                        <image class="icon-2" src="/static/images/ico_delivery_4.png"></image>
+                        <text class="title ml-3" style="color: #cf000e;">免运费</text>
+                        <text class="sub-title ml-2">(包裹{{ (deliveryItems.length + 1) }})</text>
+                    </view>
+                    <view wx:if="{{freeShippingStatus === '0'}}" class="right-item">
+                        <text wx:if="{{item.canChangeDelivery === '0'}}" class="txt-1">不能更换配送公司</text>
+                        <text wx:else class="txt-2" data-code="{{item.deliveryCode}}" data-index="{{index}}" data-company="{{item.companyPrices}}" bindtap="setShowCompanyTool">选择其它陆运</text>
+                    </view>
+                    <view wx:else class="right-item">
+                        <text class="txt-1">不能更换配送公司</text>
+                    </view>
+                </view>
+                <view class="goods-content">
+                    <view class="goods-list">
+                        <swiper style="height: 70px;" display-multiple-items="{{ windowWidth >= 75 * item.goodsImgs.length ? item.goodsImgs.length : windowWidth / 75 }}">
+                            <swiper-item class="swiper-item" wx:for="{{item.goodsImgs}}" wx:key="idx">
+                                <image src="{{ item.imgUri }}" style="width: 100%; height: 100%; margin-right: 5px;" lazy-load></image>
+                            </swiper-item>
+                        </swiper>
+                    </view>
+                    <navigator class="goods-cnt" url="/pages/goods/order_goods/order_goods?param={{paramCart}}&deliveryid={{deliveryId}}&index={{index}}&kind=delivery">
+                        <text>共{{ item.goodsImgs.length }}件 ></text>
+                    </navigator>
+                </view>
+            </view>
+            <view class="order-item-info">
+                <view class="row-item">
+                    <text class="txt-1">商品金额</text>
+                    <text class="txt-1 bold">¥{{ filter.addComma(item.totalGoodsPrice) }}</text>
+                </view>
+                <view class="row-item">
+                    <text class="txt-1">配送费</text>
+                    <view wx:if="{{item.deliverySalePrice > 0}}">
+                        <text wx:if="{{item.deliveryCostPrice > item.deliverySalePrice}}" class="txt-2 text-through">¥{{ filter.addComma(item.companyPrices[0].costPrice) }}</text>
+                        <text class="txt-1 bold ml-3">¥{{ filter.addComma(item.deliverySalePrice) }}</text>
+                    </view>
+                    <view wx:else>
+                        <text class="txt-1 bold ml-3">免运费</text>
+                    </view>
+                </view>
+            </view>
+            <view class="text-right pb-0" style="padding: 15px;">
+                <text class="txt-4">(包裹{{ (index + 1) }}重量:{{ filter.addCommaTwo(item.totalGoodsWeight + item.totalPackageWeight) }}kg)</text>
+                <text class="txt-3 bold"> 小计 : ¥{{ filter.addComma(item.deliverySalePrice + item.totalGoodsPrice) }}</text>
+            </view>
+        </view>
+        <!-- 무료배송인 경우 -->
+        <view wx:if="{{freeItems[0]}}" class="order-content">
+            <view class="order-goods-content">
+                <view class="content-header">
+                    <view class="left-item">
+                        <image class="icon-2" src="/static/images/ico_delivery_4.png"></image>
+                        <text class="title ml-3" style="color: #cf000e;">免运费</text>
+                        <text class="sub-title ml-2">(包裹{{ (deliveryItems.length + 1) }})</text>
+                    </view>
+                    <view class="right-item">
+                        <text class="txt-1">不能更换配送公司</text>
+                    </view>
+                </view>
+                <view class="goods-content">
+                    <view class="goods-list">
+                        <swiper style="height: 70px;" display-multiple-items="{{ windowWidth >= 75 * freeItems[0].goodsImgs.length ? freeItems[0].goodsImgs.length : windowWidth / 75 }}">
+                            <swiper-item class="swiper-item" wx:for="{{freeItems[0].goodsImgs}}" wx:key="idx">
+                                <image src="{{ item.imgUri }}" style="width: 100%; height: 100%; margin-right: 5px;" lazy-load></image>
+                            </swiper-item>
+                        </swiper>
+                    </view>
+                    <navigator class="goods-cnt" url="/pages/goods/order_goods/order_goods?param={{paramCart}}&deliveryid={{deliveryId}}&index=0&kind=free">
+                        <text>共{{ freeItems[0].goodsImgs.length }}件 ></text>
+                    </navigator>
+                </view>
+            </view>
+            <view class="order-item-info">
+                <view class="row-item">
+                    <text class="txt-1">商品金额</text>
+                    <text class="txt-1 bold">¥{{ filter.addComma(freeItems[0].totalGoodsPrice) }}</text>
+                </view>
+                <view class="row-item">
+                    <text class="txt-1">配送费</text>
+                    <text class="txt-1 bold ml-3">免运费</text>
+                </view>
+            </view>
+            <view class="text-right pb-0" style="padding: 15px;">
+                <text class="txt-4">(包裹{{ (deliveryItems.length + 1) }}重量:{{ filter.addCommaTwo(freeItems[0].totalGoodsWeight) }}kg)</text>
+                <text class="txt-3 bold"> 小计 : ¥{{ filter.addComma(freeItems[0].totalGoodsPrice) }}</text>
+            </view>
+        </view>
+        <!-- 이벤트가 적용된 경우 -->
+        <view wx:if="{{eventItems && eventItems.goodsImgs.length !== 0}}" class="order-content">
+            <view class="order-goods-content">
+                <view class="content-header">
+                    <view class="left-item">
+                        <image class="icon-2" src="/static/images/ico_delivery_4.png"></image>
+                        <text class="title ml-3" style="color: #cf000e;">免运费</text>
+                        <text class="sub-title ml-2">(包裹{{ (deliveryItems.length + freeItems.length + 1) }})</text>
+                    </view>
+                    <view class="right-item">
+                        <text class="txt-1">不能更换配送公司</text>
+                    </view>
+                </view>
+                <view class="goods-content">
+                    <view class="goods-list">
+                        <swiper style="height: 70px;" display-multiple-items="{{ windowWidth >= 75 * eventItems.goodsImgs.length ? eventItems.goodsImgs.length : windowWidth / 75 }}">
+                            <swiper-item class="swiper-item" wx:for="{{eventItems.goodsImgs}}" wx:key="idx">
+                                <image src="{{ item.imgUri }}" style="width: 100%; height: 100%; margin-right: 5px;" lazy-load></image>
+                            </swiper-item>
+                        </swiper>
+                    </view>
+                    <navigator class="goods-cnt" url="/pages/goods/order_goods/order_goods?param={{paramCart}}&deliveryid={{deliveryId}}&index=0&kind=event">
+                        <text>共{{ eventItems.goodsImgs.length }}件 ></text>
+                    </navigator>
+                </view>
+            </view>
+            <view class="order-item-info">
+                <view class="row-item">
+                    <text class="txt-1">商品金额</text>
+                    <text class="txt-1 bold">¥{{ filter.addComma(eventItems.totalGoodsPrice) }}</text>
+                </view>
+                <view class="row-item">
+                    <text class="txt-1">配送费</text>
+                    <text class="txt-1 bold ml-3">免运费</text>
+                </view>
+            </view>
+            <view class="text-right pb-0" style="padding: 15px;">
+                <text class="txt-4">(包裹{{ (deliveryItems.length + freeItems.length + 1) }}重量:{{ filter.addCommaTwo(eventItems.totalGoodsWeight + eventItems.packageWeight) }}kg)</text>
+                <text class="txt-3 bold"> 小计 : ¥{{ filter.addComma(eventItems.totalGoodsPrice) }}</text>
+            </view>
+        </view>
+    </block>
+    <!-- 주문 상세 정보 -->
+    <view class="order-info">
+        <view class="info-item">
+            <view class="left-info" style="width: 50%;">
+                <text class="txt-1">备注</text>
+            </view>
+            <view class="right-info" style="height: 30px; width: 50%;">
+                <input class="memo-input pos-ab" type="text" value="{{remark}}" maxlength="50" style="left: 0; right: 0; top: 0; width: auto;" data-kind="remark" bindinput="setInputValue" />
+            </view>
+        </view>
+        <view wx:if="{{isTabKind === '0'}}" class="info-item">
+            <view class="left-info">
+                <text class="txt-1">包装费</text>
+            </view>
+            <view class="middle-info">
+                <text wx:if="{{freePackageNeededPrice !== 0}}" class="txt-3">免包装费还差 {{ filter.addComma(freePackageNeededPrice) }} 元</text>
+                <text wx:if="{{freePackageStatus === '1' && freePackageNeededPrice === 0}}" class="txt-3 text-right pr-15"
+                    style="text-decoration: line-through; width: 100%; background-color: #fff; color: #222222;">{{ filter.addComma(packagePrice) }} 元</text>
+            </view>
+            <view class="right-info">
+                <text wx:if="{{freePackageStatus === '0'}}" class="txt-1 bold">¥{{filter.addComma(packagePrice)}}</text>
+                <text wx:else class="txt-1 bold">免包装费</text>
+            </view>
+        </view>
+        <view wx:if="{{isTabKind === '0'}}" class="info-item">
+            <view class="left-info">
+                <text class="txt-1">配送费</text>
+                <image wx:if="{{type === 'runner'}}" class="icon-help" src="/static/images/ico_help.png" data-kind="runner" bindtap="setShowHelp"></image>
+                <image wx:elif="{{useDeliveryCompany.length !== 0}}" class="icon-arrow {{isShowDeliveryInfo ? 'active' : ''}}" src="/static/images/ico_bottom_1.png" bindtap="setDeliveryDetail"></image>
+            </view>
+            <view class="middle-info">
+                <text wx:if="{{freeShippingNeededPrice !== 0}}" class="txt-3">免运费还差 {{ filter.addComma(freeShippingNeededPrice) }} 元</text>
+                <text wx:if="{{freeShippingNeededPrice === 0 && totalDeliveryCompanyPrice <= 0}}" class="txt-3 text-right pr-15"
+                    style="text-decoration: line-through; width: 100%; background-color: #fff; color: #222222;">{{ filter.addComma(totalDeliveryCompanyOldPrice) }} 元</text>
+            </view>
+            <view class="right-info">
+                <view wx:if="{{type === 'runner'}}">
+                    <text wx:if="{{deliveryOriginPrice !== deliverySalesPrice}}" class="txt-2 text-through mr-5">¥{{filter.addComma(deliveryOriginPrice)}}</text>
+                    <text class="txt-1 bold">¥{{filter.addComma(deliverySalesPrice)}}</text>
+                </view>
+                <view wx:elif="{{totalDeliveryCompanyPrice > 0}}" class="txt-1 bold">¥{{filter.addComma(totalDeliveryCompanyPrice)}}</view>
+                <view wx:else class="txt-1 bold">免运费</view>
+            </view>
+        </view>
+        <view wx:if="{{isShowDeliveryInfo}}" class="info-item pb-10">
+            <view class="left-info" style="width: 30%;"></view>
+            <view class="right-info" style="width: 70%;">
+                <view style="display: flex; align-items: center; justify-content: flex-end;">
+                    <view class="text-right">
+                        <view class="mb-5" wx:for="{{useDeliveryCompany}}" wx:key="index">
+                            <text class="txt-2">{{ item.name }}</text>
+                        </view>
+                    </view>
+                    <view class="ml-20 text-right">
+                        <view class="mb-5" wx:for="{{useDeliveryCompany}}" wx:key="index">
+                            <text wx:if="{{item.price > 0}}" class="txt-1 bold">¥{{ filter.addComma(item.price) }}</text>
+                            <text wx:else class="txt-1 bold">免运费</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view class="info-item">
+            <view class="left-info">
+                <text class="txt-1">商品总额</text>
+            </view>
+            <view class="middle-info"></view>
+            <view class="right-info text-right">
+                <text class="txt-1 bold">¥{{filter.addComma(totalGoodsPrice)}}</text>
+            </view>
+        </view>
+        <view class="total-info">
+            <view class="txt-1">合计:</view>
+            <view>
+                <text class="txt-2">(总重量:{{filter.addCommaTwo(totalGoodsWeight + totalPackageWeight)}}kg) </text>
+                <text class="symbol">¥</text>
+                <text class="price">{{filter.addComma(totalPrice)}}</text>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="order-bottom" style="height: {{ isDeviceHeight }}px;">
+    <block wx:if="{{type === 'runner'}}">
+        <view class="btn-order active" bindtap="setPaymentData">提交订单</view>
+    </block>
+    <block wx:else>
+        <view wx:if="{{deliveryStatus === '1' && isTabKind === '0'}}" class="btn-order active" bindtap="setPaymentData">提交订单</view>
+        <view wx:elif="{{isTabKind === '1'}}" class="btn-order active" bindtap="setPaymentData">提交订单</view>
+        <view wx:else class="btn-order">提交订单</view>
+    </block>
+</view>
+
+<!-- 배송상세정보 툴 -->
+<view class="help-tool {{isShowHelp ? 'collapsed' : ''}}">
+    <view class="header">
+        <view class="title">配送信息</view>
+        <image class="icon-cancel" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <view class="content">
+        <view class="help-item">
+            <view>
+                <text class="text">{{ type === 'delivery' ? '快递费' : '跑腿费'}}</text>
+            </view>
+            <view>
+                <text class="text active">{{filter.addComma(basicPrice)}}元</text>
+            </view>
+        </view>
+        <view wx:if="{{type !== 'runner'}}" class="help-item">
+            <view>
+                <text class="text">配送距离</text>
+            </view>
+            <view>
+                <text class="text">{{filter.addComma(totalStreet / 1000)}}km</text>
+            </view>
+        </view>
+        <view class="help-item">
+            <view>
+                <text class="text">配送重量</text>
+            </view>
+            <view>
+                <text class="text">{{filter.addCommaTwo(totalGoodsWeight)}}kg</text>
+            </view>
+        </view>
+        <view class="help-item">
+            <view>
+                <text class="text active">合计</text>
+            </view>
+            <view>
+                <text class="text active">{{filter.addComma(basicPrice + totalOverStreetPrice + totalOverStreetPrice)}}元</text>
+            </view>
+        </view>
+    </view>
+    <view class="footer">
+        <view class="btn-confirm" bindtap="setHideOverlay">知道了</view>
+    </view>
+</view>
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" index="pay" orderId="{{orderId}}" content="{{warningContent}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />
+<!-- 전화번호인증다이얼로그 -->
+<view wx:if="{{isShowPhoneBound}}" class="dialog-phone">
+    <view class="header">绑定手机</view>
+    <view class="content">
+        <view class="item">
+            <input class="input" type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" data-kind="phone" bindinput="setInputValue" />
+        </view>
+        <view class="item">
+            <input class="input" type="number" maxlength="4" value="{{authCode}}" placeholder="请输入验证码" data-kind="auth" bindinput="setInputValue" />
+            <view wx:if="{{phone.length === 11 && !isSubmitCode}}" class="auth-btn active" bindtap="setSendCode">获取验证码</view>
+            <view wx:elif="{{isSubmitCode}}" class="auth-btn">{{second}}s后重新发送</view>
+            <view wx:else class="auth-btn">获取验证码</view>
+        </view>
+    </view>
+    <view class="footer">
+        <view wx:if="{{phone.length === 11 && authCode.length === 4}}" class="btn-confirm active" bindtap="setUpdatePhoneInfo">立即绑定</view>
+        <view wx:else class="btn-confirm">立即绑定</view>
+    </view>
+</view>
+<!-- 시장에서 직접구매할수 있는 시간리스트 툴 -->
+<view class="selftime-tool {{isShowSelfTimeTool ? 'collapsed' : ''}}">
+    <view class="header">
+        <text>选择预计到达时间</text>
+        <image class="icon-cancel" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <view class="content">
+        <view class="left-content">
+            <view class="item-left">今天(周五)</view>
+        </view>
+        <view class="right-content">
+            <block wx:for="{{selfTime}}" wx:key="index">
+                <view class="item" data-index="{{index}}" bindtap="setSelfTime">
+                    <view class="txt {{setTime === item ? 'active' : ''}}">{{item}}</view>
+                    <image wx:if="{{setTime === item}}" class="image-check" src="/static/images/ico_check_1.png"></image>
+                </view>
+            </block>
+        </view>
+    </view>
+</view>
+<!-- 택배배송회사 선택 툴 -->
+<view class="company-tool {{ isShowCompanyTool ? 'collapsed' : '' }}">
+    <view class="header">
+        <text>选择配送方式</text>
+        <image class="icon-cancel" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <view style="padding: 15px;">
+        <view wx:for="{{ deliveryCompanies }}" wx:key="index" class="row-item">
+            <image wx:if="{{item.companyCode === 'jtexpress'}}" class="icon-company" src="/static/images/ico_delivery_company_3.png"></image>
+            <image wx:elif="{{item.companyCode === 'yunda'}}" class="icon-company" src="/static/images/ico_delivery_company_1.png"></image>
+            <image wx:elif="{{item.companyCode === 'youzhengguonei'}}" class="icon-company" src="/static/images/ico_delivery_company_2.png"></image>
+            <image wx:elif="{{item.companyCode === 'ems'}}" class="icon-company" src="/static/images/ico_delivery_company_2.png"></image>
+            <image wx:elif="{{item.companyCode === 'ems_2'}}" class="icon-company" src="/static/images/ico_delivery_company_2.png"></image>
+            <image wx:elif="{{item.companyCode === 'shunfeng'}}" class="icon-company" src="/static/images/ico_delivery_company_5.png"></image>
+            <image wx:elif="{{item.companyCode === 'jingdongkuaiyun'}}" class="icon-company" src="/static/images/ico_delivery_company_6.png"></image>
+            <view wx:else style="width: 50px;"></view>
+            <text wx:if="{{deliveryCompanyCode === item.companyCode}}" class="company-name active">{{ item.companyName }}</text>
+            <text wx:else class="company-name">{{ item.companyName }}</text>
+            <text class="company-price">¥{{ filter.addComma(item.salesPrice) }}</text>
+            <image wx:if="{{deliveryCompanyCode === item.companyCode}}" class="check-company" src="/static/images/ico_check_selected_2.png"></image>
+            <image wx:else class="check-company" src="/static/images/ico_check_unselected_2.png" data-code="{{item.companyCode}}" bindtap="setDeliveryCompany"></image>
+        </view>
+    </view>
+</view>
+
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />
+<!-- 메뉴툴 컴포넨트 -->
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight + 10}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />

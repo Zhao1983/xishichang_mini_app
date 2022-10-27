@@ -1,0 +1,12 @@
+<!--pages/mypage/order/receive/receive.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <image class="icon-success" src="/static/images/ico_complete.png"></image>
+    <view class="text-1">交易成功</view>
+    <view class="text-2">
+        <view>感谢您对我们的支持与信任，</view>
+        <view>有您的支持我们会努力做到最好！</view>
+    </view>
+    <navigator class="btn-main" open-type="reLaunch" url="/pages/main/main">返回首页</navigator>
+</view>

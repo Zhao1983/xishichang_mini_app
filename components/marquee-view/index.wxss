@@ -1,0 +1,29 @@
+/* components/marquee-view/index.wxss */
+
+.marquee-text-wrap {
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-text-content {
+    width: 100000px;
+    display: flex;
+    align-items: center;
+}
+
+.marquee-text {
+    white-space: nowrap;
+    animation-name: around;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes around {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}

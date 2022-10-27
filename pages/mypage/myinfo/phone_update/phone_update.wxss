@@ -1,0 +1,33 @@
+/* pages/mypage/myinfo/phone_update/phone_update.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+    text-align: center;
+}
+
+.image-index {
+    width: 78px;
+    height: 115px;
+    margin-top: 30px;
+}
+
+.text {
+    font-size: 15px;
+    color: #222222;
+    margin-top: 25px;
+}
+
+.btn-confirm {
+    font-size: 17px;
+    color: #222222;
+    border-radius: 5px;
+    padding: 12px;
+    border: 1px solid #929292;
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+}

@@ -1,0 +1,148 @@
+/* pages/mypage/delivery/delivery_status/delivery_status.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.delivery-info {
+    padding: 15px;
+    border-bottom: 1px solid #eeeeee;
+    background-color: #fff;
+}
+
+.delivery-name {
+    font-size: 15px;
+    color: #cf000e;
+    margin-bottom: 10px;
+}
+
+.delivery-number {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.number-text {
+    font-size: 15px;
+    color: #505153;
+}
+
+.btn-clipboard {
+    border: 1px solid #b0b0b0;
+    border-radius: 20px;
+    padding: 4px 12px;
+    color: #222222;
+    font-size: 13px;
+}
+
+.delivery-item {
+    display: flex;
+    align-items: center;
+}
+
+.delivery-item .left-item {
+    width: 16.66%;
+    display: flex;
+    align-items: center;
+}
+
+.delivery-item .right-item {
+    width: 83.33%;
+}
+
+.delivery-image {
+    width: 21px;
+    height: 19px;
+}
+
+.delivery-text {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #505153;
+}
+
+.track-item {
+    display: flex;
+    align-items: center;
+    height: 100px;
+}
+
+.track-item .left-item {
+    width: 16.66%;
+    height: 100%;
+}
+
+.track-item .left-item .point {
+    width: 16px;
+    height: 16px;
+}
+
+.track-item .right-item {
+    width: 83.33%;
+    height: 100%;
+}
+
+.track-line {
+    width: 3px;
+    background-color: #f5f6fd;
+    height: 86%;
+    margin-top: -5px;
+    margin-left: 6px;
+}
+
+.track-text {
+    font-size: 13px;
+    color: #222222;
+    line-height: 1.5;
+}
+
+.track-text.active {
+    color: #cf000e;
+}
+
+.track-time {
+    font-size: 11px;
+    color: #222222;
+}
+
+.track-time.active {
+    color: #cf000e;
+}
+
+.bottom-menu {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #e7e7e7;
+    background-color: #fff;
+    z-index: 100;
+    padding: 0px 15px;
+    justify-content: flex-end;
+}
+
+.bottom-menu .btn {
+    width: 76px;
+    height: 28px;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #222222;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ffcc33;
+    background-color: #ffcc33;
+}

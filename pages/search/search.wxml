@@ -1,0 +1,58 @@
+<!--pages/search/search.wxml-->
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view class="container">
+    <view class="search-tool" style="top: {{heightNavigation}}px;">
+        <view class="search-input">
+            <input class="input" confirm-type="search" value="{{searchWord}}" focus="{{isFocus}}" placeholder="请输入关键字" bindinput="setInputWord" bindconfirm="redirectResult" />
+            <image class="icon-search" src="/static/images/ico_search.png"></image>
+            <image wx:if="{{searchWord !== ''}}" class="icon-cancel" src="/static/images/ico_cancel_2.png" bindtap="setClearSearchWord"></image>
+        </view>
+    </view>
+    <view class="search-content">
+        <view class="search-history">
+            <view class="title-content">
+                <image class="icon-history" src="/static/images/ico_timer.png"></image>
+                <text class="title">历史搜索</text>
+            </view>
+            <image class="icon-history" src="/static/images/ico_recycle_1.png" bindtap="setRemoveRecentData"></image>
+        </view>
+        <view class="search-history-content">
+            <view id="history-content" class="history-content" style="height: {{heightHistoryContent}};">
+                <block wx:for="{{recentData}}" wx:key="index">
+                    <text class="search-item" data-word="{{item}}" bindtap="setSearchItem">{{item}}</text>
+                </block>
+            </view>
+            <view class="right-content">
+                <view wx:if="{{isShowArrowHistory}}" class="search-item" data-index="history" bindtap="setShowAll">
+                    <image class="icon-arrow {{ isShowAllHistoryContent ? 'active' : '' }}" src="/static/images/ico_bottom.png"></image>
+                </view>
+            </view>
+        </view>
+        <view class="search-history pt-30">
+            <view class="title-content">
+                <image class="icon-history" src="/static/images/ico_search_favority.png"></image>
+                <text class="title">热门搜索</text>
+            </view>
+        </view>
+        <view class="search-history-content">
+            <view id="favority-content" class="history-content" style="height: {{heightFavorityContent}};">
+                <block wx:for="{{recommendData}}" wx:key="index">
+                    <text class="search-item" data-word="{{item}}" bindtap="setSearchItem">{{item}}</text>
+                </block>
+            </view>
+            <view class="right-content">
+                <view wx:if="{{isShowArrowFavority}}" class="search-item" data-index="favority" bindtap="setShowAll">
+                    <image class="icon-arrow {{ isShowAllFavorityContent ? 'active' : '' }}" src="/static/images/ico_bottom.png"></image>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="menu-position" style="bottom: 30px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="请输入关键字" show="{{isShowWarningDialog}}" bindbuttontap="setWarningDialog" buttons="{{warningBtn}}" />

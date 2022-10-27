@@ -1,0 +1,34 @@
+<!--components/product-vertical-item/index.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<view class="product-content">
+    <view class="thumbnail" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}" bindtap="{{goodsStatus === '1' ? 'setGoods' : ''}}">
+        <image class="image" src="{{goodsImg}}" lazy-load></image>
+        <image wx:if="{{goodsIconUrl !== ''}}" class="icon" src="{{goodsIconUrl}}"></image>
+        <image wx:if="{{goodsStatus === '0'}}" class="goods-outside" src="/static/images/ico_outside.png"></image>
+        <image wx:if="{{goodsVideo !== '' && goodsVideo !== null && goodsVideo !== undefine}}" class="icon-play" src="/static/images/ico_play_1.png"></image>
+    </view>
+    <view class="product-info">
+        <view data-shopid="{{shopId}}" data-goodsid="{{goodsId}}" bindtap="{{goodsStatus === '1' ? 'setGoods' : ''}}">
+            <text class="title">{{goodsName}}</text>
+            <text class="desc">{{goodsIntro}}</text>
+            <view wx:if="{{shopName !== ''}}" class="shop-info">
+                <image class="image" src="/static/images/ico_shop_1.png"></image>
+                <text class="name">{{shopName}}</text>
+            </view>
+            <view style="margin-top: 10px;">
+                <text wx:if="{{originalPrice > 0}}" class="original-price">¥{{filter.addComma(originalPrice)}}</text>
+                <view class="price-group">
+                    <text class="symbol">¥</text>
+                    <text class="price">{{filter.addComma(salesPrice)}}</text>
+                    <text class="unit">/{{goodsUnit}}</text>
+                </view>
+            </view>
+            <view wx:if="{{eventStatus === '1'}}" style="margin-top: 5px;">
+                <view class="free-price-item red" style="margin-right: 3px; display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+            </view>
+        </view>
+        <image wx:if="{{goodsStatus === '1'}}" class="icon-cart" src="/static/images/ico_cart_enabled.png" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}"
+            bindtap="{{sizeStatus === '0' ? 'setAddCart' : 'setGoods'}}" style="{{eventStatus === '1' ? 'bottom: 34px;' : 'bottom: 14px;'}}"></image>
+    </view>
+</view>

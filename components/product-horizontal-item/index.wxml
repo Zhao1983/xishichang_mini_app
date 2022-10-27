@@ -1,0 +1,42 @@
+<!--components/product-horizontal-item/index.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<view class="product-content {{isShowDelete ? 'other' : ''}}"
+    style="margin-bottom: {{ view === 'type' ? '0' : '10px' }}; border-radius: {{ view === 'type' ? '0' : '7px' }}; border-bottom: {{ view === 'type' ? '1px solid #eeeeee' : 'none' }};">
+    <view class="product-detail">
+        <view wx:if="{{isShowDelete}}" class="check-item">
+            <label class="radio">
+                <radio value="" checked="{{isChecked}}" color="#cf000e" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}" bindtap="setCheckGoods" />
+            </label>
+        </view>
+        <view class="goods-thumb" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}" bindtap="{{goodsStatus === '1' ? 'setGoods' : ''}}">
+            <image class="goods-image" src="{{goodsImg}}" lazy-load></image>
+            <image wx:if="{{goodsIconUrl !== ''}}" class="goods-icon" src="{{goodsIconUrl}}"></image>
+            <image wx:if="{{goodsStatus === '0'}}" class="goods-outside" src="/static/images/ico_outside.png"></image>
+            <view wx:if="{{goodsVideo !== '' && goodsVideo !== null}}" class="play-detail">
+                <image class="icon-play" src="/static/images/ico_play_1.png"></image>
+            </view>
+        </view>
+        <view class="goods-info {{isShowDelete ? 'other' : ''}}">
+            <view data-shopid="{{shopId}}" data-goodsid="{{goodsId}}" bindtap="{{goodsStatus === '1' ? 'setGoods' : ''}}" style="width: 100%;">
+                <text class="title">{{goodsName}}</text>
+                <text class="sub-title">{{goodsIntro}}</text>
+                <view wx:if="{{shopName !== ''}}" class="shop-info">
+                    <image class="icon" src="/static/images/ico_shop_1.png"></image>
+                    <text class="shop-name">{{shopName}}</text>
+                </view>
+                <view class="price-info">
+                    <text class="symbol">¥</text>
+                    <text class="price">{{filter.addComma(salesPrice)}}</text>
+                    <text class="unit">/{{goodsUnit}}</text>
+                    <text wx:if="{{originalPrice > 0}}" class="origin-price">¥{{filter.addComma(originalPrice)}}</text>
+                </view>
+            </view>
+            <image wx:if="{{goodsStatus === '1'}}" class="icon-cart" src="/static/images/ico_cart_enabled.png" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}"
+                bindtap="{{sizeStatus === '0' ? 'setAddCart' : 'setGoods'}}" style="{{ eventStatus === '1' ? 'bottom: 20px' : 'bottom: 0' }}"></image>
+            <view wx:if="{{eventStatus === '1'}}" style="margin-top: 5px;">
+                <view class="free-price-item red" style="margin-right: 3px; display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+            </view>
+        </view>
+    </view>
+</view>

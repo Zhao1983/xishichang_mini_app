@@ -1,0 +1,32 @@
+/* components/loading-bar/index.wxss */
+
+.spinner_overay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+    /* background-color: rgba(0, 0, 0, 0.2); */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    height: 30px;
+    width: 30px;
+    animation: rotate 0.8s infinite linear;
+    border: 4px solid #cf000e;
+    border-right-color: transparent;
+    border-radius: 50%;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

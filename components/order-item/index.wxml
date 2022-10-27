@@ -1,0 +1,132 @@
+<!--components/order-item/index.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<view class="order-content">
+    <view class="txt-status">
+        <text wx:if="{{orderStatus === 1 && refundDt === ''}}">待付款</text>
+        <text wx:elif="{{(orderStatus === 2 || orderStatus === 7) && refundDt === ''}}">待发货</text>
+        <text wx:elif="{{orderStatus === 3 && refundDt === ''}}">待收货</text>
+        <text wx:elif="{{orderStatus === 4 && refundDt === ''}}">已取消</text>
+        <text wx:elif="{{orderStatus === 5 && refundDt === ''}}">交易成功</text>
+        <text wx:elif="{{orderStatus === 6 && refundDt === ''}}">部分发货</text>
+        <text wx:elif="{{orderStatus === 8 && refundDt === ''}}">待自取</text>
+        <text wx:elif="{{orderStatus === 9}}">已退款</text>
+    </view>
+    <view wx:for="{{shops}}" wx:for-item="shop" wx:key="index" class="order-row">
+        <view class="shop-info">
+            <image class="icon-shop" src="/static/images/ico_shop_1.png"></image>
+            <text class="shop-title">{{shop.shopName}}</text>
+        </view>
+        <view wx:for="{{shop.goods}}" wx:for-item="prod" wx:key="idx" class="goods-info">
+            <block wx:if="{{viewKind === 'list'}}">
+                <view url="/pages/mypage/order/order_detail/order_detail?orderid={{orderId}}" data-orderid="{{orderId}}" bindtap="redirectDetail" style="display: flex; width: 100%;">
+                    <view class="image-content">
+                        <image class="goods-image" src="{{prod.imgUri}}" lazy-load="{{true}}"></image>
+                        <image wx:if="{{prod.goodsIconUrl}}" class="goods-icon" src="{{prod.goodsIconUrl}}"></image>
+                        <image wx:if="{{prod.status === '0'}}" class="outside-image" src="/static/images/ico_outside.png"></image>
+                    </view>
+                    <view class="goods-content">
+                        <view class="goods-title">{{prod.name}}</view>
+                        <view wx:if="{{prod.sizeName !== ''}}" class="size-title">{{prod.sizeName}}</view>
+                        <view class="price-content">
+                            <view>
+                                <text class="symbol">¥</text>
+                                <text class="price">{{filter.addComma(prod.salesPrice)}}</text>
+                                <text class="unit">/{{prod.unit}}</text>
+                                <text wx:if="{{prod.originalPrice !== 0}}" class="original-price ml-10">¥{{filter.addComma(prod.originalPrice)}}</text>
+                            </view>
+                            <view class="goods-quantity">x{{prod.num}}</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+            <block wx:else>
+                <navigator url="/pages/goods/goods_detail?shopid={{shop.shopId}}&productid={{prod.id}}" style="display: flex; width: 100%;">
+                    <view class="image-content">
+                        <image class="goods-image" src="{{prod.imgUri}}" lazy-load="{{true}}"></image>
+                        <image wx:if="{{prod.goodsIconUrl}}" class="goods-icon" src="{{prod.goodsIconUrl}}"></image>
+                        <image wx:if="{{prod.status === '0'}}" class="outside-image" src="/static/images/ico_outside.png"></image>
+                    </view>
+                    <view class="goods-content">
+                        <view class="goods-title">{{prod.name}}</view>
+                        <view wx:if="{{prod.sizeName !== ''}}" class="size-title">{{prod.sizeName}}</view>
+                        <view class="price-content">
+                            <view>
+                                <text class="symbol">¥</text>
+                                <text class="price">{{filter.addComma(prod.salesPrice)}}</text>
+                                <text class="unit">/{{prod.unit}}</text>
+                                <text wx:if="{{prod.originalPrice !== 0}}" class="original-price ml-10">¥{{filter.addComma(prod.originalPrice)}}</text>
+                            </view>
+                            <view class="goods-quantity">x{{prod.num}}</view>
+                        </view>
+                    </view>
+                </navigator>
+            </block>
+        </view>
+    </view>
+    <view class="delivery-info">
+        <view wx:if="{{deliveryType !== 4 && viewKind === 'detail'}}" class="info-row">
+            <text class="text">包装费</text>
+            <text class="text">￥{{filter.addComma(packagePrice)}}</text>
+        </view>
+        <view wx:if="{{deliveryType !== 4 && viewKind === 'detail'}}" class="info-row">
+            <view style="display: flex; align-items: center;">
+                <text class="text">配送费</text>
+                <!-- 택배배송이면 -->
+                <image wx:if="{{deliveryType === 2 || deliveryType === 5 || deliveryType === 1}}" class="icon-arrow {{isShowDeliveryInfo ? 'active' : ''}}" src="/static/images/ico_bottom_1.png"
+                    bindtap="setDeliveryInfo"></image>
+                <!-- 배달이면 -->
+                <image wx:if="{{deliveryType === 3}}" class="icon-help" src="/static/images/ico_help.png" data-kind="runner" bindtap="setShowHelp"></image>
+            </view>
+            <text wx:if="{{totalDeliveryPrice > 0}}" class="text">￥{{filter.addComma(totalDeliveryPrice)}}</text>
+            <text wx:else class="text">免运费</text>
+        </view>
+        <view wx:if="{{isShowDeliveryInfo && deliveryType !== 4 && viewKind === 'detail'}}" class="info-row" style="margin-bottom: 8px;">
+            <view class="left-info"></view>
+            <view class="right-info">
+                <view style="display: flex; align-items: center; justify-content: flex-end;">
+                    <view style="text-align: right;">
+                        <view wx:for="{{deliveries}}" wx:key="index" style="margin-bottom: 5px;">
+                            <text class="txt-2">{{ item.name }}</text>
+                        </view>
+                    </view>
+                    <view style="text-align: right; margin-left: 20px;">
+                        <view wx:for="{{deliveries}}" wx:key="index" style="margin-bottom: 5px;">
+                            <text wx:if="{{item.price > 0}}" class="txt-1 bold">¥{{ filter.addComma(item.price) }}</text>
+                            <text wx:else class="txt-1 bold">免运费</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+        <view wx:if="{{viewKind === 'detail'}}" class="info-row">
+            <text class="text">商品总额</text>
+            <text class="text">￥{{filter.addComma(totalGoodsPrice)}}</text>
+        </view>
+        <view class="info-row">
+            <view></view>
+            <view>
+                <text wx:if="{{orderStatus === 1}}" class="text" style="font-weight: bold;">需付款: </text>
+                <text wx:elif="{{orderStatus === 2 || orderStatus === 3 || orderStatus === 4 || orderStatus === 5 || orderStatus === 6 || orderStatus === 7 || orderStatus === 8}}" class="text"
+                    style="font-weight: bold;">订单总价: </text>
+                <text wx:elif="{{orderStatus === 9}}" class="text" style="font-weight: bold;">退款: </text>
+                <text class="text" style="color: #cf000e; font-weight: bold;">￥{{filter.addComma(orderPrice)}}</text>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{viewKind === 'list' && orderStatus !== 4 && orderStatus !== 9}}" class="btn-group">
+        <view></view>
+        <view style="display: flex; align-items: center;">
+            <block wx:if="{{orderStatus === 1}}">
+                <view class="btn" data-orderid="{{orderId}}" bindtap="setCancelOrder">取消订单</view>
+                <view class="btn active" style="margin-left: 7px;" data-orderid="{{orderId}}" data-ordernumber="{{orderNumber}}" bindtap="setPayOrder">付款</view>
+            </block>
+            <block wx:if="{{orderStatus === 3 && refundDt === '' && deliveryType !== 3 && deliveryType !== 4}}">
+                <view class="btn" data-orderid="{{orderId}}" data-ordernumber="{{orderNumber}}" bindtap="deliveryInfo">查看物流</view>
+                <view class="btn active" style="margin-left: 7px;" data-orderid="{{orderId}}" bindtap="setReceive">确认收货</view>
+            </block>
+            <block wx:if="{{orderStatus === 2 && refundDt === ''}}">
+                <view class="btn" data-orderid="{{orderId}}" bindtap="setRefundOrder">退款</view>
+            </block>
+        </view>
+    </view>
+</view>

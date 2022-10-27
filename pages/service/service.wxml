@@ -1,0 +1,4 @@
+<!--pages/service/service.wxml-->
+<view class="container">
+    <web-view src="https://chat16.live800.com/live800/chatClient/chatbox.jsp?companyID=1431825&configID=153858&jid=2924429018&s=1"></web-view>
+</view>

@@ -1,0 +1,8 @@
+<!--components/marquee-view/index.wxml-->
+<view class="marquee-text-wrap">
+    <view class="marquee-text-content">
+        <block wx:for="{{repeat}}" wx:key="index">
+            <view class="marquee-text" style="animation-duration: {{duration}}s; color: {{font_color}}; font-size: {{font_size}}px;">{{text}}</view>
+        </block>
+    </view>
+</view>

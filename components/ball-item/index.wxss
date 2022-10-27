@@ -1,0 +1,13 @@
+/* components/ball-item/index.wxss */
+.ball-container .ball {
+    position: fixed;
+    z-index: 900;
+}
+
+.inner {
+    position: fixed;
+    width: 16px;
+    height: 16px;
+    border-radius: 100%;
+    background: rgb(235, 91, 34);
+}

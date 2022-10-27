@@ -1,0 +1,9 @@
+<!--pages/exception/404/404.wxml-->
+<navigation-bar background="#f8f8f8" title="{{navTitle}}" back="{{true}}"></navigation-bar>
+<view class="container">
+    <!-- <image class="image" src="/static/images/404.png"></image> -->
+    <text class="text mt-15">{{reason}}</text>
+    <navigator class="btn-redirect" url="/pages/main/main" open-type="reLaunch">
+        <text>返回首页</text>
+    </navigator>
+</view>

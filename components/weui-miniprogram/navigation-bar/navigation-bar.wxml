@@ -1,0 +1,42 @@
+<view class="weui-navigation-bar {{extClass}}">
+    <view class="weui-navigation-bar__placeholder {{ios ? 'ios' : 'android'}}" style="padding-top: {{statusBarHeight}}px;visibility: hidden;" />
+    <view class="weui-navigation-bar__inner {{ios ? 'ios' : 'android'}}"
+        style="padding-top: {{statusBarHeight}}px; color: {{color}};background: {{background}};{{displayStyle}};{{innerPaddingRight}};{{innerWidth}};">
+        <view wx:if="{{isShowSearch}}" class="search-content" animation="{{animateSearch}}" style="{{innerWidth}};">
+            <navigator class="search-input" url="/pages/search/search">
+                <image class="icon" src="../../../static/images/ico_search.png"></image>
+                <text class="text">请输入关键字</text>
+            </navigator>
+        </view>
+        <view wx:if="{{!isShowSearch}}" class="navigator-bar" animation="{{animateNav}}" style="display: flex; opacity: 1; {{innerWidth}};">
+            <view class="weui-navigation-bar__left" style="{{leftWidth}}">
+                <block wx:if="{{back}}">
+                    <view style="width: 100%;" bindtap="back">
+                        <view class="weui-navigation-bar__buttons">
+                            <view class="weui-navigation-bar__button weui-navigation-bar__btn_goback" hover-class="weui-active" />
+                        </view>
+                    </view>
+                </block>
+                <block wx:else>
+                    <slot name="left" />
+                </block>
+            </view>
+            <view class="weui-navigation-bar__center" style="text-align: {{ titleCenter ? 'center' : 'left' }};">
+                <view wx:if="{{loading}}" class="weui-navigation-bar__loading">
+                    <view class="weui-loading" style="width:{{size.width}}rpx;height:{{size.height}}rpx;" />
+                </view>
+                <block wx:if="{{title}}">
+                    <text class="title-width">{{title}}</text>
+                </block>
+                <block wx:else>
+                    <slot name="center" />
+                </block>
+            </view>
+        </view>
+        <view wx:if="{{rightBtn}}" class="weui-navigation-bar__right">
+            <view class="right-btn" bindtap="setBtnRight">
+                <text>{{btnText}}</text>
+            </view>
+        </view>
+    </view>
+</view>

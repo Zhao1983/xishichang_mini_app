@@ -1,0 +1,32 @@
+/* pages/mypage/myinfo/phone_input/phone_input.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+}
+
+.phone-input {
+    padding: 20px 15px 30px 15px;
+}
+
+.input {
+    height: 100%;
+    font-size: 15px;
+    color: #222222;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e3e3e3;
+    margin-bottom: 30px;
+}
+
+.btn-confirm {
+    border-radius: 30px;
+    padding: 12px;
+    background-color: #ffcc33;
+    font-size: 16px;
+    color: #222222;
+    font-weight: bold;
+    text-align: center;
+}

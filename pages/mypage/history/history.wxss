@@ -1,0 +1,39 @@
+/* pages/mypage/history/history.wxss */
+
+.container {
+    max-width: 100%;
+}
+
+.empty-history {
+    padding-top: 100px;
+    text-align: center;
+}
+
+.empty-history .image-empty {
+    width: 81px;
+    height: 81px;
+}
+
+.empty-history .text-1 {
+    font-size: 15px;
+    color: #b3b3b3;
+    padding-top: 23px;
+    margin-bottom: 60px;
+}
+
+.empty-history .btn-redirect {
+    background-color: #ffcc33;
+    width: 108px;
+    height: 38px;
+    border-radius: 20px;
+    color: #222222;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.history-content {
+    padding: 15px;
+}

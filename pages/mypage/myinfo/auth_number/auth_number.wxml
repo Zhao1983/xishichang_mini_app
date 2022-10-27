@@ -1,0 +1,14 @@
+<!--pages/mypage/myinfo/auth_number/auth_number.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <view class="text-1">请输入验证码</view>
+    <view class="text-2">输入 {{phone}} 收到的验证码</view>
+    <view class="auth-content">
+        <input class="auth-input" type="number" maxlength="1" focus="{{isFocusFirst}}" data-index="0" bindinput="setInputValue" />
+        <input class="auth-input" type="number" maxlength="1" focus="{{isFocusSecond}}" data-index="1" bindinput="setInputValue" />
+        <input class="auth-input" type="number" maxlength="1" focus="{{isFocusThird}}" data-index="2" bindinput="setInputValue" />
+        <input class="auth-input" type="number" maxlength="1" focus="{{isFocusFourth}}" data-index="3" bindinput="setInputValue" />
+    </view>
+    <view class="text-3">{{second}}s后重新发送</view>
+</view>

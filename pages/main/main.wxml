@@ -1,0 +1,73 @@
+<!--pages/main/main.wxml-->
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{false}}" isShowSearch="{{isShowSearch}}"></navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<scroll-view class="container" scroll-y="true" scroll-with-animation="{{true}}" bindscroll="setScrollEvent" scroll-top="{{scrollTop}}" refresher-enabled="{{true}}" refresher-threshold="{{100}}"
+    refresher-default-style="black" refresher-background="#f5f6fd" refresher-triggered="{{isPageRefreshTrigger}}" bindrefresherrefresh="setRefreshPage" bindscrolltolower="setScrollReachBottom"
+    style="height: {{heightContent}}px;">
+    <image class="header-background" src="/static/images/main_top_background.png"></image>
+    <view class="main-content">
+        <view class="search-content">
+            <navigator url="/pages/search/search">
+                <view class="search-input" style="width: auto;">
+                    <image class="icon" src="/static/images/ico_search.png"></image>
+                    <text class="text">请输入关键字</text>
+                </view>
+            </navigator>
+        </view>
+        <view class="tag-content">
+            <block wx:for="{{tags}}" wx:for-item="item" wx:for-index="index" wx:key="index">
+                <navigator class="item" url="/pages/search/search_result/search_result?word={{item}}&typeid=0">
+                    <text>{{item}}</text>
+                </navigator>
+            </block>
+        </view>
+        <view class="banner-content">
+            <swiper autoplay="true" interval="3000" duration="500" circular="true">
+                <block wx:for="{{bannerData}}" wx:for-index="index" wx:key="index">
+                    <swiper-item bindtap="clickBannerItem" data-index="{{index}}">
+                        <image src="{{item.imgUri}}" lazy-load></image>
+                    </swiper-item>
+                </block>
+            </swiper>
+        </view>
+        <view class="type-content">
+            <view class="type-detail">
+                <swiper circular="true">
+                    <swiper-item wx:for="{{typeData}}" wx:for-item="items" wx:for-index="index" wx:key="index">
+                        <block wx:for="{{items}}" wx:key="idx">
+                            <navigator url="/pages/category/category_detail?id={{item.id}}&subid=0&position={{index}}" class="type-item">
+                                <image class="image" src="{{item.iconUri}}" lazy-load></image>
+                                <text class="text">{{item.typeName}}</text>
+                            </navigator>
+                        </block>
+                    </swiper-item>
+                </swiper>
+            </view>
+        </view>
+        <view class="shop-content">
+            <view class="shop-title">
+                <view class="title-detail">
+                    <image class="title-icon" src="/static/images/main_icon_1.png"></image>
+                    <text class="title-text">商户推荐</text>
+                </view>
+                <view class="icon-detail">
+                    <image class="icon" src="/static/images/back_1.png"></image>
+                </view>
+            </view>
+            <view class="shop-items">
+                <shop-item wx:for="{{shopData}}" wx:for-index="index" wx:key="index" shopId="{{item.id}}" shopName="{{item.shopName}}" age="{{item.age}}" starNum="{{item.starNum}}"
+                    shopIntro="{{item.shopIntro}}" goods="{{item.goods}}" avatarUri="{{item.avatarUri}}" eventStatus="{{item.eventStatus}}" view="main" />
+            </view>
+            <view style="width: 100%; height: 52px;">
+                <loading-more type="circle" show="{{loadingMore}}"></loading-more>
+                <view wx:if="{{isMoreText}}" class="more-detail">
+                    <text class="text">商户陆续上架中, 合作热线 0433-2651000</text>
+                </view>
+            </view>
+        </view>
+    </view>
+</scroll-view>
+<!-- 알림 다이얼로그 -->
+<notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />
+<scroll-top isShow="{{isScroll}}" bindtopevent="setScrollTop" />
+<menu-bar activeUrl="main" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />

@@ -1,0 +1,13 @@
+<!--pages/goods/order_complete/order_complete.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{false}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <image wx:if="{{isPayStatus}}" class="icon-success" src="/static/images/ico_success.gif"></image>
+    <image wx:else class="icon-info" src="/static/images/ico_info.png"></image>
+    <view wx:if="{{isPayStatus}}" class="success-txt">支付成功！</view>
+    <view wx:else class="info-txt">正在处理...</view>
+    <view class="detail-txt">本次支付已成功，详细信息请进入我的订单查看</view>
+    <navigator class="btn-main" open-type="reLaunch" url="/pages/main/main">首页</navigator>
+    <navigator class="btn-order" open-type="reLaunch" url="/pages/mypage/order/order_detail/order_detail?orderid={{orderId}}">我的订单</navigator>
+</view>
+<audio src="{{src}}" id="myAudio"></audio>

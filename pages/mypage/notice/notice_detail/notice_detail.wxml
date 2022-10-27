@@ -1,0 +1,25 @@
+<!--pages/mypage/notice/notice_detail/notice_detail.wxml-->
+
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{false}}" rightBtn="{{isNavRightBtn}}" btnText="{{navBtnTitle}}" bindactiontap="setRightBtn">
+</navigation-bar>
+<loading-bar isShowLoading="{{pageLoading}}" />
+<view class="container" style="background-color: {{ isEmpty ? '#fff' : '#f5f6fd' }}; height: {{ heightContent }}px;">
+    <view wx:if="{{isEmpty}}" class="empty-notice">
+        <image class="image-empty" src="/static/images/ico_empty_message.png"></image>
+        <view class="text-1">
+            <text>当前没有任何消息哦</text>
+        </view>
+    </view>
+    <view wx:for="{{messageData}}" wx:key="index" class="notice-content">
+        <view class="notice-date">{{item.createDt}}</view>
+        <view class="notice-detail">{{ item.msgContent }}</view>
+    </view>
+</view>
+
+<view class="menu-position" style="bottom: 30px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<!-- 메뉴툴 컴포넨트 -->
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="确定要删除浏览历史吗？" show="{{isShowWarningDialog}}" bindbuttontap="setDeleteConfirm" buttons="{{warningBtn}}" />

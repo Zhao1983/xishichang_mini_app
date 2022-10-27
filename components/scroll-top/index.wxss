@@ -1,0 +1,16 @@
+/* components/scroll-top/index.wxss */
+
+.scroll-top {
+    position: fixed;
+    width: 48px;
+    height: 48px;
+    right: 20px;
+    z-index: 110;
+    bottom: -48px;
+    opacity: 0;
+}
+
+.scroll-top .icon {
+    width: 48px;
+    height: 48px;
+}

@@ -1,0 +1,229 @@
+<!--pages/mypage/order/order_detail/order_detail.wxml-->
+
+<wxs src="/filter/filter.wxs" module="filter" />
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view wx:if="{{isShowOverlay}}" class="bg-mask" bindtap="setHideOverlay"></view>
+<view class="container">
+    <view wx:if="{{isShowOrderLimitTime}}" class="warning" style="top: {{heightNavigation}}px;">
+        <image class="icon" src="/static/images/ico_info_1.png"></image>
+        <text class="text ml-5">如现在支付订单, 我们将在最近的工作时间内安排发货哟</text>
+    </view>
+    <view class="orders" style="padding-top: {{heightTop + 15}}px;">
+        <view wx:if="{{orderStatus === 1}}" class="cancel-time-text">
+            <text>请您尽快完成支付，否则订单会自动取消！支付剩余时间：</text>
+            <text style="color: #cf000e;">{{countDate}}</text>
+        </view>
+        <block wx:if="{{(orderStatus === 3 || orderStatus === 5) && deliveryType !== 4 && refundDt === ''}}">
+            <view class="order-item">
+                <view class="left">
+                    <image wx:if="{{deliveryType === 3}}" class="icon-delivery" src="/static/images/ico_delivery_2.png"></image>
+                    <image wx:else class="icon-delivery" src="/static/images/ico_delivery_1.png"></image>
+                </view>
+                <block wx:if="{{orderStatus === 5}}">
+                    <view class="middle-1">
+                        <view class="text-green mb-3">已签收</view>
+                        <view class="text-1 mb-3">{{ province }} {{ city }} {{ country }} {{ address }} {{ houseNo }}</view>
+                        <view class="text-2">{{doneDt}}</view>
+                    </view>
+                </block>
+                <block wx:if="{{orderStatus === 3 && deliveryType !== 4}}">
+                    <view class="middle-2">
+                        <view class="text-green mb-3">商家已发货，正在通知快递公司区间。</view>
+                        <view class="text-2">{{deliveryDt}}</view>
+                    </view>
+                    <view class="right">
+                        <image class="icon-arrow" src="/static/images/ico_right_2.png"></image>
+                    </view>
+                </block>
+            </view>
+        </block>
+        <view class="order-item">
+            <view class="left">
+                <image class="icon-gps" src="/static/images/ico_gps_1.png"></image>
+            </view>
+            <block wx:if="{{deliveryType !== 4}}">
+                <view class="middle-1">
+                    <view class="text-1 mb-10">{{ province }} {{ city }} {{ country }} {{ address }} {{ houseNo }}</view>
+                    <view class="text-1">{{ userName }}先生 {{ userPhone }}</view>
+                </view>
+            </block>
+            <block wx:else>
+                <view class="middle-1">
+                    <view class="text-1 mb-2">延吉西市场一楼 电商服务台</view>
+                    <view class="text-1 mb-10">电话: 0433-265-1000</view>
+                    <view class="subitem">
+                        <view class="subleft">
+                            <view class="text-3 mb-5">自取时间</view>
+                            <view class="text-4">{{ selfTime }}</view>
+                        </view>
+                        <view class="subright">
+                            <view class="text-3 mb-5">预留电话</view>
+                            <view class="text-4">{{ userPhone }}</view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <order-item orderId="{{orderId}}" orderStatus="{{orderStatus}}" orderPrice="{{orderPrice}}" orderNumber="{{orderNo}}" shops="{{shopData}}" deliveries="{{useDeliveryCompany}}" viewKind="detail"
+            refundDt="{{refundDt}}" totalDeliveryPrice="{{totalDeliveryPrice}}" packagePrice="{{packagePrice}}" totalGoodsPrice="{{totalGoodsPrice}}" deliveryType="{{deliveryType}}"
+            bindshowhelp="setShowHelp" />
+
+        <view class="order-item" style="flex-direction: column; margin-bottom: {{ isDeviceHeight }}px;">
+            <view class="info-row">
+                <view class="text-5">订单编号：{{orderNo}}</view>
+                <view class="btn-clipboard" data-value="{{orderNo}}" bindtap="setClipboard">复制</view>
+            </view>
+            <view class="info-row">
+                <view class="text-5">下单时间：{{createDt}}</view>
+            </view>
+            <!-- 환불인 경우 -->
+            <view wx:if="{{orderStatus === 9 || refundDt !== ''}}" class="info-row">
+                <view class="text-5">退款时间：{{refundDt}}</view>
+            </view>
+            <!-- 주문취소인 경우 -->
+            <view wx:if="{{orderStatus === 4}}" class="info-row">
+                <view class="text-5">取消时间：{{cancelDt}}</view>
+            </view>
+            <!-- 직접주문인 경우 -->
+            <view wx:if="{{deliveryType === 4}}" class="info-row">
+                <block wx:if="{{orderStatus === 3}}">
+                    <view class="text-5">客服电话：{{deliveries[0].deliveryPhone}}</view>
+                    <view class="btn-clipboard" data-value="{{deliveries[0].deliveryPhone}}" bindtap="makePhoneCall">打电话</view>
+                </block>
+                <view class="text-5">自取时间：{{deliveryDt}}</view>
+            </view>
+            <!-- 수화대기인 경우 -->
+            <block wx:if="{{(orderStatus === 3 || orderStatus === 8) && refundDt === '' && deliveryType !== 4}}">
+                <!-- 배송인 경우 -->
+                <block wx:if="{{deliveryType !== 3}}">
+                    <view class="info-row">
+                        <view class="text-5">发货时间：{{deliveryDt}}</view>
+                    </view>
+                    <block wx:for="{{useDeliveryCompany}}" wx:key="index">
+                        <view class="info-row">
+                            <view class="text-5">物流公司：{{ item.name }}</view>
+                        </view>
+                        <view class="info-row">
+                            <view class="text-5">快递单号：{{ item.no }}</view>
+                            <view class="btn-clipboard" data-value="{{item.no}}" bindtap="setClipboard">复制</view>
+                        </view>
+                    </block>
+                </block>
+                <block wx:else>
+                    <view class="info-row">
+                        <view class="text-5">发货时间：{{deliveryDt}}</view>
+                    </view>
+                </block>
+            </block>
+        </view>
+    </view>
+</view>
+<block wx:if="{{orderStatus === 1 || (orderStatus === 3 && refundDt === '') || (orderStatus === 2 && refundDt === '')}}">
+    <view class="bottom-group" style="height: {{ isDeviceHeight }}px;">
+        <view></view>
+        <view style="display: flex; align-items: center;">
+            <block wx:if="{{orderStatus === 1}}">
+                <view class="btn" data-orderid="{{orderId}}" bindtap="setCancelOrder">取消订单</view>
+                <view class="btn active" style="margin-left: 7px;" data-orderid="{{orderId}}" data-ordernumber="{{orderNumber}}" bindtap="setPayOrder">付款</view>
+            </block>
+            <block wx:if="{{orderStatus === 3 && refundDt === ''}}">
+                <view class="btn" data-orderid="{{orderId}}" data-ordernumber="{{orderNumber}}" bindtap="deliveryInfo">查看物流</view>
+                <view class="btn active" style="margin-left: 7px;" data-orderid="{{orderId}}" bindtap="setReceiveOrder">确认收货</view>
+            </block>
+            <block wx:if="{{orderStatus === 2 && refundDt === ''}}">
+                <view class="btn" data-orderid="{{orderId}}" bindtap="setRefundOrder">退款</view>
+            </block>
+        </view>
+    </view>
+</block>
+
+<!-- 배송상세정보 툴 -->
+<view class="help-tool {{isShowHelp ? 'collapsed' : ''}}">
+    <view class="header">
+        <view class="title">配送信息</view>
+        <image class="icon-cancel" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <view class="content">
+        <view class="help-item">
+            <view>
+                <text class="text">跑腿费</text>
+            </view>
+            <view>
+                <text class="text active">{{filter.addComma(basicPrice)}}元</text>
+            </view>
+        </view>
+        <view class="help-item">
+            <view>
+                <text class="text">配送距离</text>
+            </view>
+            <view>
+                <text class="text">{{filter.addComma(totalStreet / 1000)}}km</text>
+            </view>
+        </view>
+        <view class="help-item">
+            <view>
+                <text class="text">配送重量</text>
+            </view>
+            <view>
+                <text class="text">{{filter.addCommaTwo(totalGoodsWeight)}}kg</text>
+            </view>
+        </view>
+        <view class="help-item">
+            <view>
+                <text class="text active">合计</text>
+            </view>
+            <view>
+                <text class="text active">{{filter.addComma(basicPrice + totalOverStreetPrice + totalOverStreetPrice)}}元</text>
+            </view>
+        </view>
+    </view>
+    <view class="footer">
+        <view class="btn-confirm" bindtap="setHideOverlay">知道了</view>
+    </view>
+</view>
+
+<!-- 배송번호에 의한 배송상태확인툴 -->
+<view class="delivery-tool {{isShowDeliveryTool ? 'collapsed' : ''}}">
+    <view class="header">
+        <view class="left-item">选择查看物流公司</view>
+        <image class="right-item" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <block wx:if="{{deliveryType !== 3 && deliveryType !== 4}}">
+        <block wx:for="{{useDeliveryCompany}}" wx:key="index">
+            <view class="tool-row">
+                <view class="left-item">{{item.name}}</view>
+                <navigator class="right-item" url="/delivery/pages/delivery_status/delivery_status?orderid={{orderId}}&deliveryno={{item.no}}&orderno={{item.orderNo}}">{{item.no}}</navigator>
+            </view>
+        </block>
+    </block>
+</view>
+
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />
+<!-- 메뉴툴 컴포넨트 -->
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight + 15}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" content="{{warningContent}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />
+
+<!-- 전화번호인증다이얼로그 -->
+<view wx:if="{{isShowPhoneBound}}" class="dialog-phone">
+    <view class="header">绑定手机</view>
+    <view class="content">
+        <view class="item">
+            <input class="input" type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" data-kind="phone" bindinput="setInputValue" />
+        </view>
+        <view class="item">
+            <input class="input" type="number" maxlength="4" value="{{authCode}}" placeholder="请输入验证码" data-kind="auth" bindinput="setInputValue" />
+            <view wx:if="{{phone.length === 11 && !isSubmitCode}}" class="auth-btn active" bindtap="setSendCode">获取验证码</view>
+            <view wx:elif="{{isSubmitCode}}" class="auth-btn">{{second}}s后重新发送</view>
+            <view wx:else class="auth-btn">获取验证码</view>
+        </view>
+    </view>
+    <view class="footer">
+        <view wx:if="{{phone.length === 11 && authCode.length === 4}}" class="btn-confirm active" bindtap="setUpdatePhoneInfo">立即绑定</view>
+        <view wx:else class="btn-confirm">立即绑定</view>
+    </view>
+</view>

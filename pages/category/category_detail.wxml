@@ -1,0 +1,62 @@
+<!--pages/category/category_detail.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{isBackStatus}}"></navigation-bar>
+<view class="container">
+    <view class="top-content" style="top: {{heightNavigation}}px;">
+        <view class="category-search-tool">
+            <navigator url="/pages/search/search?typeid={{typeId}}" class="search-content">
+                <image class="icon-search" src="/static/images/ico_search.png"></image>
+                <text class="txt-placeholder">请输入关键字</text>
+            </navigator>
+            <image class="image" src="/static/images/search_background.png"></image>
+        </view>
+        <view class="category-menu">
+            <swiper class="swiper-category" display-multiple-items="{{swiperCount}}" current="{{currentPos}}">
+                <view class="type-line-active" animation="{{animateTypeLine}}"></view>
+                <block wx:for="{{typeData}}" wx:key="index">
+                    <swiper-item>
+                        <view class="type-item" data-typeid="{{item.id}}" data-typename="{{item.typeName}}" data-position="{{index}}" bindtap="setType">
+                            <image class="image-item" src="{{item.iconUri}}"></image>
+                            <view class="txt-item {{typeId === item.id ? 'active' : ''}}">
+                                <text>{{item.typeName}}</text>
+                            </view>
+                        </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+        </view>
+    </view>
+    <view class="category-content" style="height: {{contentInnerHeight}}px; top: {{contentPos}}px;">
+        <view class="sub-menu">
+            <view wx:if="{{isRecommend}}" class="menu-item {{subTypeId === 0 ? 'active' : ''}}" data-subtypeid="0" data-subtypename="推荐" bindtap="setSubType">
+                <text>推荐</text>
+                <image wx:if="{{subTypeId === 0}}" class="image-active" src="/static/images/type_left_active.png"></image>
+            </view>
+            <block wx:for="{{subTypeData}}" wx:key="index">
+                <view class="menu-item {{item.id === subTypeId ? 'active' : ''}}" data-subtypeid="{{item.id}}" data-subtypename="{{item.name}}" bindtap="setSubType">
+                    <text>{{item.name}}</text>
+                    <image wx:if="{{item.id === subTypeId}}" class="image-active" src="/static/images/type_left_active.png"></image>
+                </view>
+            </block>
+        </view>
+        <scroll-view class="content" scroll-y="true" bindscrolltolower="setScrollReachBottom" scroll-top="{{scrollTop}}">
+            <block wx:for="{{goodsData}}" wx:key="index">
+                <product-horizontal-item wx:if="{{item.goodsStatus === '1'}}" shopId="{{item.shopId}}" goodsId="{{item.id}}" goodsName="{{item.goodsName}}" goodsImg="{{item.goodsImg}}"
+                    eventStatus="{{item.eventStatus}}" goodsIconName="{{item.goodsIconName}}" goodsStatus="{{item.goodsStatus}}" goodsVideo="{{item.goodsVideo}}" goodsUnit="{{item.goodsUnit}}"
+                    goodsIntro="{{item.goodsIntro}}" salesPrice="{{item.salesPrice}}" shopName="{{item.shopName}}" originalPrice="{{item.originalPrice}}" sizeStatus="{{item.sizeStatus}}"
+                    sizeId="{{item.sizeId}}" view="type" balls="{{balls}}" bindballevent="ballEvent" />
+            </block>
+            <view style="width: 100%; height: 52px;">
+                <loading-more type="circle" show="{{loadingMore}}"></loading-more>
+                <view wx:if="{{isMoreText}}" class="more-detail">
+                    <text class="text">商品陆续上架中, 合作热线 0433-2651000</text>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</view>
+<!-- 장바구니볼컴포넨트 섹션 -->
+<ball-item balls="{{balls}}" pos_x="{{pos_x}}" pos_y="40" ball_style="{{ball_style}}" bindendballevent="endBallEvent" />
+<menu-bar id="menu" activeUrl="type" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />
+<!-- 알림 다이얼로그 -->
+<notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />

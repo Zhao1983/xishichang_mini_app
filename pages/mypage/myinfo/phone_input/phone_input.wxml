@@ -1,0 +1,12 @@
+<!--pages/mypage/myinfo/phone_input/phone_input.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <view class="phone-input">
+        <input class="input" type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" bindinput="setValue" />
+        <view class="btn-confirm" bindtap="setConfirm">下一步</view>
+    </view>
+</view>
+
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />

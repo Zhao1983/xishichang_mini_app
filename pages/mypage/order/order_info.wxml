@@ -1,0 +1,90 @@
+<!--pages/mypage/order/order_info.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view wx:if="{{isShowOverlay}}" class="bg-mask" bindtap="setHideOverlay"></view>
+<view class="container">
+    <view class="top-content" style="top: {{heightNavigation}}px;">
+        <view wx:if="{{isShowOrderLimitTime}}" class="warning">
+            <image class="icon" src="/static/images/ico_info_1.png"></image>
+            <text class="text ml-5">如现在支付订单, 我们将在最近的工作时间内安排发货哟</text>
+        </view>
+        <view class="menu">
+            <view class="menu-item" data-item="" bindtap="setViewItem">
+                <view class="menu-txt {{pageIndex === '' ? 'active' : ''}}">
+                    <text>全部</text>
+                    <text wx:if="{{allOrderCnt > 0}}" class="icon-cnt" style="font-weight: normal;">{{allOrderCnt}}</text>
+                </view>
+            </view>
+            <view class="menu-item" data-item="notPay" bindtap="setViewItem">
+                <view class="menu-txt {{pageIndex==='notPay' ? 'active' : '' }}">
+                    <text>待付款</text>
+                    <text wx:if="{{prePayOrderCnt > 0}}" class="icon-cnt" style="font-weight: normal;">{{prePayOrderCnt}}</text>
+                </view>
+            </view>
+            <view class="menu-item" data-item="ready" bindtap="setViewItem">
+                <view class="menu-txt {{pageIndex==='ready' ? 'active' : '' }}">
+                    <text>待发货</text>
+                    <text wx:if="{{preDeliveryOrderCnt > 0}}" class="icon-cnt" style="font-weight: normal;">{{preDeliveryOrderCnt}}</text>
+                </view>
+            </view>
+            <view class="menu-item" data-item="dispatched" bindtap="setViewItem">
+                <view class="menu-txt {{pageIndex==='dispatched' ? 'active' : '' }}">
+                    <text>待收货</text>
+                    <text wx:if="{{preReceiveOrderCnt > 0}}" class="icon-cnt" style="font-weight: normal;">{{preReceiveOrderCnt}}</text>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="orders" style="padding-top: {{heightTop + 15}}px;">
+        <view wx:if="{{isEmptyOrder}}" class="empty-txt">您还没有相关的订单</view>
+        <block wx:for="{{orderData}}" wx:key="index">
+            <order-item orderId="{{item.id}}" orderStatus="{{item.orderStatus}}" orderPrice="{{item.orderPrice}}" orderNumber="{{item.orderNo}}" shops="{{item.shops}}" viewKind="list" refundDt=""
+                bindactiondelivery="deliveryInfo" bindcancelorder="setCancelOrder" bindpayorder="setPayOrder" pageCount="{{item.page}}" bindreceive="setReceiveOrder" bindrefundorder="setRefundOrder" />
+        </block>
+        <view style="width: 100%; height: 52px;">
+            <loading-more type="circle" show="{{loadingMore}}"></loading-more>
+        </view>
+    </view>
+</view>
+
+<!-- 전화번호인증다이얼로그 -->
+<view wx:if="{{isShowPhoneBound}}" class="dialog-phone">
+    <view class="header">绑定手机</view>
+    <view class="content">
+        <view class="item">
+            <input class="input" type="number" maxlength="11" value="{{phone}}" placeholder="请输入手机号" data-kind="phone" bindinput="setInputValue" />
+        </view>
+        <view class="item">
+            <input class="input" type="number" maxlength="4" value="{{authCode}}" placeholder="请输入验证码" data-kind="auth" bindinput="setInputValue" />
+            <view wx:if="{{phone.length === 11 && !isSubmitCode}}" class="auth-btn active" bindtap="setSendCode">获取验证码</view>
+            <view wx:elif="{{isSubmitCode}}" class="auth-btn">{{second}}s后重新发送</view>
+            <view wx:else class="auth-btn">获取验证码</view>
+        </view>
+    </view>
+    <view class="footer">
+        <view wx:if="{{phone.length === 11 && authCode.length === 4}}" class="btn-confirm active" bindtap="setUpdatePhoneInfo">立即绑定</view>
+        <view wx:else class="btn-confirm">立即绑定</view>
+    </view>
+</view>
+
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />
+<!-- 메뉴툴 컴포넨트 -->
+<view class="menu-position" animation="{{animateSetting}}" style="bottom: {{isDeviceHeight}}px;" bindtap="openActionSheet">
+    <image class="menu-icon" src="/static/images/ico_setting.png"></image>
+</view>
+<action-sheet show="{{isShowSheet}}" bindactiontap="closeActionSheet" />
+<!-- 배송번호에 의한 배송상태확인툴 -->
+<view class="delivery-tool {{isShowDeliveryTool ? 'collapsed' : ''}}">
+    <view class="header">
+        <view class="left-item">选择查看物流公司</view>
+        <image class="right-item" src="/static/images/ico_cancel_3.png" bindtap="setHideOverlay"></image>
+    </view>
+    <block wx:for="{{deliveryData}}" wx:key="index">
+        <view class="tool-row">
+            <view class="left-item">{{item.deliveryCompanyName}}</view>
+            <navigator class="right-item" url="/delivery/pages/delivery_status/delivery_status?orderid={{orderId}}&deliveryno={{item.deliveryNo}}&orderno={{item.orderNo}}">{{item.deliveryNo}}</navigator>
+        </view>
+    </block>
+</view>
+<!-- 경고 다이얼로그 -->
+<warning-dialog title="{{warningTitle}}" content="{{warningContent}}" show="{{isShowWarningDialog}}" bindbuttontap="setConfirmWarningDialog" buttons="{{warningBtn}}" />

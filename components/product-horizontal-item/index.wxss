@@ -1,0 +1,232 @@
+/* components/product-horizontal-item/index.wxss */
+.product-content {
+    background-color: #fff;
+    padding: 15px;
+}
+
+.product-content.other {
+    padding-left: 5px;
+}
+
+.product-detail {
+    display: flex;
+    width: 100%;
+    height: auto;
+    align-items: flex-start;
+}
+
+.check-item {
+    width: 8.33%;
+    display: flex;
+    align-items: center;
+}
+
+.goods-thumb {
+    position: relative;
+    width: 33.33%;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.goods-thumb .goods-image {
+    width: 90%;
+    height: 20vw;
+    border-radius: 7px;
+    border: 1px solid #e5e5e5;
+}
+
+.goods-thumb .goods-icon {
+    position: absolute;
+    border-top-right-radius: 7px;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    right: 10%;
+}
+
+.goods-thumb .goods-outside {
+    position: absolute;
+    width: 92%;
+    top: 0;
+    left: 0;
+    height: 100%;
+    opacity: 0.7;
+}
+
+.goods-thumb .play-detail {
+    position: absolute;
+    width: 90%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.goods-thumb .icon-play {
+    width: 40px;
+    height: 40px;
+}
+
+.goods-info {
+    position: relative;
+    width: 66.66%;
+    height: auto;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.goods-info.other {
+    width: 58.33%;
+}
+
+.goods-info .title {
+    font-size: 15px;
+    color: #222222;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-height: 1.5;
+}
+
+.goods-info .sub-title {
+    font-size: 13px;
+    color: #b8b8b8;
+    margin-top: 3px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    line-height: 1.5;
+}
+
+.goods-info .shop-info {
+    display: flex;
+    width: 100%;
+    margin-top: 3px;
+    align-items: center;
+}
+
+.goods-info .shop-info .icon {
+    width: 12px;
+    height: 12px;
+}
+
+.goods-info .shop-info .shop-name {
+    font-size: 12px;
+    color: #222222;
+    margin-left: 2px;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.goods-info .price-info {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.goods-info .price-info .symbol {
+    font-size: 13px;
+    color: #cf000e;
+    font-weight: bold;
+}
+
+.goods-info .price-info .price {
+    font-size: 16px;
+    color: #cf000e;
+    font-weight: bold;
+}
+
+.goods-info .price-info .unit {
+    font-size: 14px;
+    color: #b8b8b8;
+    margin-left: 2px;
+}
+
+.goods-info .price-info .origin-price {
+    font-size: 13px;
+    color: #b8b8b8;
+    text-decoration: line-through;
+    margin-left: 5px;
+}
+
+.goods-info .icon-cart {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 27px;
+    height: 27px;
+}
+
+.free-price-item {
+    font-size: 11px;
+    color: #fff;
+    padding: 3px;
+    border-radius: 3px;
+    display: table;
+}
+
+.free-price-item.red {
+    background-color: #ff7e4c;
+}
+
+.free-price-item.green {
+    background-color: #37c2a8;
+}
+
+/* @media (max-width: 320px) {
+    .product-detail {
+        height: 62px;
+    }
+}
+
+@media (min-width: 321px) and (max-width: 359px) {
+    .product-detail {
+        height: 65px;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 374px) {
+    .product-detail {
+        height: 72px;
+    }
+}
+
+@media (min-width: 361px) and (max-width: 410px) {
+    .product-detail {
+        height: 74px;
+    }
+}
+
+@media (min-width: 411px) and (max-width: 499px) {
+    .product-detail {
+        height: 85px;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 767px) {
+    .product-detail {
+        height: 90px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .product-detail {
+        height: 150px;
+    }
+} */

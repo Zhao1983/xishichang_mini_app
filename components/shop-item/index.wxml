@@ -1,0 +1,69 @@
+<!--components/shop-item/index.wxml-->
+<wxs src="/filter/filter.wxs" module="filter" />
+<view class="shop-item">
+    <navigator url="/pages/shop/shop_detail?shopid={{shopId}}&productid=0">
+        <view class="shop-detail">
+            <view class="shop-thumb">
+                <image class="shop-image" src="{{avatarUri}}" lazy-load></image>
+            </view>
+            <view class="shop-info">
+                <view class="title-content">
+                    <view class="title">
+                        <text class="title-text">{{shopName}}</text>
+                    </view>
+                    <view class="icon">
+                        <image class="icon-image" src="{{shopIcon}}"></image>
+                    </view>
+                </view>
+                <view class="shop-age">
+                    <image class="mark" src="/static/images/year_icon.png"></image>
+                    <text class="year" wx:if="{{age < 1}}">新开店铺</text>
+                    <text class="year" wx:else>{{age}}年老店</text>
+                    <text class="rate">销量:</text>
+                    <image wx:for="{{starNum}}" wx:key="index" class="diamond" src="/static/images/ico_diamond.png">
+                    </image>
+                </view>
+                <view class="shop-desc">
+                    <text class="desc-text">{{shopIntro}}</text>
+                </view>
+            </view>
+        </view>
+    </navigator>
+    <view class="goods-detail">
+        <view wx:if="{{view === 'goods_detail'}}" class="shop-other-info">
+            <text class="title">该摊位还在卖—</text>
+            <navigator url="/pages/shop/shop_detail?shopid={{shopId}}&productid=0">
+                <text class="icon">全部商品</text>
+            </navigator>
+        </view>
+        <swiper class="goods-swiper" display-multiple-items="{{swiperCount}}" style="{{ eventStatus ? 'height: 180px;' : 'height: 130px;' }}">
+            <block wx:for="{{goodsData}}" wx:key="index">
+                <navigator url="/pages/goods/goods_detail?shopid={{shopId}}&productid={{item.id}}">
+                    <swiper-item class="goods-swiper-item" data-index="{{index}}">
+                        <view class="detail">
+                            <view class="thumb">
+                                <image class="thumb-image" src="{{item.goodsImg}}" lazy-load></image>
+                                <image wx:if="{{item.goodsIconUrl !== ''}}" class="icon-image" src="{{item.goodsIconUrl}}">
+                                </image>
+                                <image class="icon-play" wx:if="{{item.goodsVideo !== '' && item.goodsVideo !== null && item.goodsVideo !== undefined}}" src="/static/images/ico_play_1.png"></image>
+                            </view>
+                            <view class="title">
+                                <text class="title-text">{{item.goodsName}}</text>
+                            </view>
+                            <view class="price-info">
+                                <text class="price-symbol">¥</text>
+                                <text class="price">{{filter.addComma(item.salesPrice)}}</text>
+                                <text class="weight">/{{item.goodsUnit}}</text>
+                                <text wx:if="{{item.originalPrice > 0}}" class="old">¥{{filter.addComma(item.originalPrice)}}</text>
+                            </view>
+                            <view wx:if="{{item.eventStatus === '1'}}" style="margin-top: 5px;">
+                                <view class="free-price-item red" style="margin-bottom: 3px;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                                <view class="free-price-item green">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                            </view>
+                        </view>
+                    </swiper-item>
+                </navigator>
+            </block>
+        </swiper>
+    </view>
+</view>

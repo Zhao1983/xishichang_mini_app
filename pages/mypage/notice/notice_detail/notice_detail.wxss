@@ -1,0 +1,48 @@
+/* pages/mypage/notice/notice_detail/notice_detail.wxss */
+
+.container {
+    max-width: 100%;
+}
+
+.empty-notice {
+    padding-top: 150px;
+    text-align: center;
+}
+
+.empty-notice .image-empty {
+    width: 85px;
+    height: 85px;
+}
+
+.empty-notice .text-1 {
+    font-size: 15px;
+    color: #b3b3b3;
+    padding-top: 23px;
+    margin-bottom: 60px;
+}
+
+.notice-content {
+    padding: 15px;
+}
+
+.notice-date {
+    background-color: #dadada;
+    width: 130px;
+    margin: 0 auto;
+    padding: 3px;
+    font-size: 11px;
+    color: #fff;
+    text-align: center;
+    border-radius: 3px;
+    margin-bottom: 8px;
+}
+
+.notice-detail {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 15px;
+    color: #222222;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}

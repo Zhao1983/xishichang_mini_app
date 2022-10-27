@@ -1,0 +1,68 @@
+/* pages/mypage/myinfo/auth_update/auth_update.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+    padding: 15px;
+}
+
+.input-phone {
+    height: 40px;
+    font-size: 15px;
+    color: #222222;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.auth-input {
+    position: relative;
+    padding: 10px 0px;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.auth {
+    height: 100%;
+    font-size: 15px;
+    color: #222222;
+}
+
+.auth-btn {
+    position: absolute;
+    width: 100px;
+    border: 1px solid #eaeaea;
+    border-radius: 5px;
+    top: 5px;
+    right: 0;
+    font-size: 13px;
+    color: #cbcbcb;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.auth-btn.active {
+    border: 1px solid #ffcc33;
+    color: #222222;
+    background-color: #ffcc33;
+}
+
+.btn-confirm {
+    border-radius: 30px;
+    padding: 12px;
+    border: 1px solid #eaeaea;
+    font-size: 16px;
+    color: #cbcbcb;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-confirm.active {
+    border: 1px solid #ffcc33;
+    color: #222222;
+    background-color: #ffcc33;
+    font-weight: bold;
+}

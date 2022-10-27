@@ -1,0 +1,105 @@
+<!--pages/mypage/delivery/delivery_info/delivery_info.wxml-->
+
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{true}}" titleCenter="{{true}}"></navigation-bar>
+<view wx:if="{{isShowOverlay}}" class="bg-mask" bindtap="setHideOverlay"></view>
+<view class="container">
+    <view class="input-row">
+        <view class="left-item">
+            <text class="label-txt">收货地址:</text>
+        </view>
+        <view class="middle-item-1">
+            <input class="title-width input-txt" type="text" value="{{address}}" disabled="true" placeholder="点击选择收货地址" style="width: 100%;" bindtap="setShowLocationTool" />
+        </view>
+        <view class="right-item">
+            <image class="icon-arrow" src="/static/images/ico_right_1.png"></image>
+        </view>
+    </view>
+    <view wx:if="{{isShowMap}}" class="input-row">
+        <view class="left-item">
+            <text class="label-txt">详细地址:</text>
+        </view>
+        <view class="middle-item-1" bindtap="setLocationMap">
+            <input class="input-txt" type="text" value="{{addressDetail}}" disabled="true" placeholder="请输入详细地址" style="width: 100%;" />
+        </view>
+        <view class="right-item" bindtap="setLocationMap">
+            <image class="icon-gps" src="/static/images/ico_position.png"></image>
+        </view>
+    </view>
+    <view class="input-row">
+        <view class="left-item">
+            <text class="label-txt">门牌地址:</text>
+        </view>
+        <view class="middle-item-2">
+            <input class="input-txt" type="text" value="{{houseNo}}" maxlength="30" placeholder="请输入门牌地址" style="width: 100%;" data-index="addr" bindinput="setInputValue" />
+        </view>
+    </view>
+    <view class="input-row">
+        <view class="left-item">
+            <text class="label-txt">收货人:</text>
+        </view>
+        <view class="middle-item-2">
+            <input class="input-txt" type="text" value="{{userName}}" maxlength="20" placeholder="请输入收货人姓名" style="width: 100%;" data-index="name" bindinput="setInputValue" />
+        </view>
+    </view>
+    <view class="input-row">
+        <view class="left-item">
+            <text class="label-txt">手机号:</text>
+        </view>
+        <view class="middle-item-2">
+            <input class="input-txt" type="number" value="{{phoneNum}}" maxlength="11" placeholder="请输入收货人手机号码" style="width: 100%;" data-index="phone" bindinput="setInputValue" />
+        </view>
+    </view>
+    <view wx:if="{{deliveryId !== 0}}" class="normal-row">
+        <view>
+            <view class="label-txt mb-5">设置默认地址:</view>
+            <view class="other-txt">提醒：每次下单会默认推荐使用该地址</view>
+        </view>
+        <switch checked="{{isAddressDefault}}" color="#cf000e" bindchange="setChangeSwitch"></switch>
+    </view>
+    <view class="btn-save" bindtap="setDelivery">保存地址</view>
+</view>
+
+<!-- 지역선택 툴 -->
+<view class="location-tool  {{isShowLocationTool ? 'collapsed' : ''}}">
+    <view class="header">
+        <view class="left-item">
+            <block wx:for="{{locationResult}}" wx:key="index">
+                <view class="tab {{activeItem === item ? 'active' : ''}}" data-item="{{item}}" data-index="{{index}}" bindtap="setTabAddress">{{item}}</view>
+            </block>
+        </view>
+        <view class="right-item" bindtap="setHideOverlay">
+            <image class="icon-cancel" src="/static/images/ico_cancel_3.png"></image>
+        </view>
+    </view>
+    <view class="content">
+        <swiper current="{{currPos}}" style="height: {{isDevice ? '90%' : '92%'}};" bindchange="setChangeSwiper">
+            <swiper-item>
+                <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: {{isDevice ? '90%' : '92%'}};">
+                    <view wx:for="{{provinceData}}" wx:key="index" class="row-item" data-name="{{item.name}}" data-city="{{item.districts}}" data-adcode="{{item.adcode}}" bindtap="setProvince">
+                        <view class="text">{{ item.name }}</view>
+                        <image class="icon-arrow" src="/static/images/ico_right_2.png"></image>
+                    </view>
+                </scroll-view>
+            </swiper-item>
+            <swiper-item wx:if="{{cityData.length !== 0}}">
+                <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: {{isDevice ? '90%' : '92%'}};">
+                    <view wx:for="{{cityData}}" wx:key="index" class="row-item" data-name="{{item.name}}" data-country="{{item.districts}}" data-adcode="{{item.adcode}}" bindtap="setCity">
+                        <view class="text">{{ item.name }}</view>
+                        <image class="icon-arrow" src="/static/images/ico_right_2.png"></image>
+                    </view>
+                </scroll-view>
+            </swiper-item>
+            <swiper-item wx:if="{{countryData.length !== 0}}">
+                <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: {{isDevice ? '90%' : '92%'}};">
+                    <view wx:for="{{countryData}}" wx:key="index" class="row-item" data-name="{{item.name}}" data-center="{{item.center}}" data-adcode="{{item.adcode}}" bindtap="setCountry">
+                        <view class="text">{{ item.name }}</view>
+                        <image class="icon-arrow" src="/static/images/ico_right_2.png"></image>
+                    </view>
+                </scroll-view>
+            </swiper-item>
+        </swiper>
+    </view>
+</view>
+
+<custom-toast isShowToast="{{isShowToast}}" message="{{toastMessage}}" bindendtoast="endToast" />

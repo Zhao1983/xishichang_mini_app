@@ -1,0 +1,29 @@
+/* pages/mypage/help/help.wxss */
+
+.container {
+    max-width: 100%;
+}
+
+.help-row {
+    padding: 15px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.help-txt-1 {
+    font-size: 15px;
+    color: #222222;
+}
+
+.help-txt-2 {
+    font-size: 13px;
+    color: #a4a4a4;
+}
+
+.icon-arrow {
+    width: 6px;
+    height: 10px;
+}

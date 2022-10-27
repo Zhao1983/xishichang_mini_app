@@ -1,0 +1,47 @@
+/* pages/mypage/notice/notice.wxss */
+
+page {
+    background-color: #fff !important;
+}
+
+.container {
+    max-width: 100%;
+    padding: 0px 15px;
+}
+
+.notice-row {
+    padding: 15px 0px;
+    border-bottom: 1px solid #eeeeee;
+    display: flex;
+    align-items: center;
+}
+
+.icon-notice {
+    width: 48px;
+    height: 48px;
+}
+
+.notice-txt-1 {
+    font-size: 16px;
+    color: #222222;
+}
+
+.notice-txt-2 {
+    font-size: 13px;
+    color: #929292;
+}
+
+.icon-cnt {
+    position: absolute;
+    background-color: #cf000e;
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    top: -5px;
+    right: -5px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,12 @@
+{
+    "usingComponents": {
+        "loading-bar": "/components/loading-bar/index",
+        "navigation-bar": "/components/weui-miniprogram/navigation-bar/navigation-bar",
+        "product-horizontal-item": "/components/product-horizontal-item/index",
+        "ball-item": "/components/ball-item/index",
+        "loading-more": "/components/weui-miniprogram/loading/loading",
+        "notice-dialog": "/components/notice-dialog/index",
+        "menu-bar": "/components/menu-bar/index"
+    },
+    "navigationStyle": "custom"
+}

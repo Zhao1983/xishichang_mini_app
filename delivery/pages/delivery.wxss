@@ -1,0 +1,103 @@
+/* pages/mypage/delivery/delivery.wxss */
+
+.container {
+    max-width: 100%;
+}
+
+.empty-address {
+    text-align: center;
+    margin-top: 30%;
+}
+
+.empty-icon {
+    width: 99px;
+    height: 134px;
+    margin-bottom: 23px;
+}
+
+.empty-text {
+    font-size: 18px;
+    color: #222222;
+}
+
+.address-item {
+    padding: 12px;
+    margin-bottom: 12px;
+    background-color: #fff;
+}
+
+.address-item:last-child {
+    margin-bottom: 0;
+}
+
+.address-item .row-1 {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 15px;
+}
+
+.address-item .row-1 .left {
+    width: 91.66%;
+}
+
+.address-item .row-2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address-item .row-1 .right {
+    width: 8.33%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.icon-arrow {
+    width: 6px;
+    height: 10px;
+}
+
+.title-profile {
+    font-size: 15px;
+    color: #222222;
+}
+
+.title-address {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    line-height: 1.5;
+    font-size: 15px;
+    color: #222222;
+}
+
+.text-other {
+    font-size: 15px;
+    color: #929292;
+}
+
+.text-active {
+    background-color: #afafaf;
+    padding: 2px;
+    font-size: 14px;
+    color: #fff;
+}
+
+.btn-add {
+    background-color: #ffcc33;
+    width: 238px;
+    height: 38px;
+    border-radius: 20px;
+    margin: 25px auto;
+    color: #222222;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,37 @@
+<!--components/menu-bar/index.wxml-->
+<view class="menu-bar" animation="{{animateMenu}}" style="height: {{isDeviceHeight}}px;">
+    <view class="menu-item" data-url="main" bindtap="redirectUrl">
+        <view class="item">
+            <image class="item-image" wx:if="{{activeUrl === 'main'}}" src="/static/images/ico_main_selected.png"></image>
+            <image class="item-image" wx:else src="/static/images/ico_main_unselected.png"></image>
+        </view>
+    </view>
+    <view class="menu-item" data-url="type" bindtap="redirectUrl">
+        <view class="item">
+            <image class="item-image" wx:if="{{activeUrl === 'type'}}" src="/static/images/ico_type_selected.png">
+            </image>
+            <image class="item-image" wx:else src="../../static/images/ico_type_unselected.png"></image>
+        </view>
+    </view>
+    <!-- <view class="menu-item" data-url="service" bindtap="redirectUrl">
+        <image class="item-image" src="/static/images/ico_message.png" style="width: 24px; height: 40px; margin-left: 0;"></image>
+    </view> -->
+    <button class="menu-item" open-type="contact">
+        <image class="item-image" src="/static/images/ico_message.png" style="width: 24px; height: 40px; margin-left: 0;"></image>
+    </button>
+    <view class="menu-item" data-url="cart" bindtap="redirectUrl">
+        <view class="item">
+            <image class="item-image" wx:if="{{activeUrl === 'cart'}}" src="/static/images/ico_cart_selected.png"></image>
+            <image class="item-image" wx:else src="/static/images/ico_cart_unselected.png"></image>
+            <view wx:if="{{cartCount > 0}}" class="cart-badge">
+                <text>{{cartCount}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="menu-item" data-url="mypage" bindtap="redirectUrl">
+        <view class="item">
+            <image class="item-image" wx:if="{{activeUrl === 'mypage'}}" src="/static/images/ico_user_selected.png"></image>
+            <image class="item-image" wx:else src="../../static/images/ico_user_unselected.png"></image>
+        </view>
+    </view>
+</view>

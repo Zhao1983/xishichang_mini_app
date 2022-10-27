@@ -1,0 +1,69 @@
+<!--pages/mypage/mypage.wxml-->
+<loading-bar isShowLoading="{{pageLoading}}" />
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{false}}" titleCenter="{{true}}"></navigation-bar>
+<view class="container">
+    <image class="background-image" src="/static/images/mypage_top_bg.png"></image>
+    <view class="mypage-content" style="padding-bottom: {{isDeviceHeight + 15}}px;">
+        <navigator class="avatar" url="/pages/mypage/myinfo/myinfo">
+            <image class="image-avatar" src="{{userAvatar}}"></image>
+            <view class="nickname">{{nickName}}</view>
+        </navigator>
+        <view class="info-content">
+            <view class="info-title">我的订单</view>
+            <view class="info-row">
+                <navigator class="item" url="/pages/mypage/order/order_info?index=notPay">
+                    <image class="mb-8" src="/static/images/ico_payment.png" style="width: 39px; height: 30px;"></image>
+                    <text>待付款</text>
+                    <view wx:if="{{payCount > 0}}" class="icon-count">{{payCount}}</view>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/order/order_info?index=ready">
+                    <image class="mb-8" src="/static/images/ico_send.png" style="width: 31px; height: 30px;"></image>
+                    <text>待发货</text>
+                    <view wx:if="{{deliveryCount > 0}}" class="icon-count">{{deliveryCount}}</view>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/order/order_info?index=dispatched">
+                    <image class="mb-8" src="/static/images/ico_receive.png" style="width: 42px; height: 30px;"></image>
+                    <text>待收货</text>
+                    <view wx:if="{{receiveCount > 0}}" class="icon-count">{{receiveCount}}</view>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/order/order_info?index=">
+                    <image class="mb-8" src="/static/images/ico_order.png" style="width: 29px; height: 30px;"></image>
+                    <text>我的订单</text>
+                </navigator>
+            </view>
+        </view>
+        <view class="info-content">
+            <view class="info-title">我的服务</view>
+            <view class="info-row">
+                <navigator class="item" url="/delivery/pages/delivery">
+                    <image class="mb-8" src="/static/images/ico_address.png" style="width: 30px; height: 30px;"></image>
+                    <text>收货地址</text>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/favority/favority">
+                    <image class="mb-8" src="/static/images/ico_favority_1.png" style="width: 30px; height: 30px;"></image>
+                    <text>收藏夹</text>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/history/history">
+                    <image class="mb-8" src="/static/images/ico_history.png" style="width: 30px; height: 30px;"></image>
+                    <text>浏览历史</text>
+                </navigator>
+                <navigator class="item" url="/pages/mypage/notice/notice">
+                    <image class="mb-8" src="/static/images/ico_alarm_1.png" style="width: 30px; height: 30px;"></image>
+                    <text>消息</text>
+                    <view wx:if="{{messageCount > 0}}" class="icon-count">{{messageCount}}</view>
+                </navigator>
+            </view>
+            <view class="info-row">
+                <navigator class="item" url="/pages/mypage/help/help">
+                    <image class="mb-8" src="/static/images/ico_help_1.png" style="width: 30px; height: 30px;"></image>
+                    <text>帮助中心</text>
+                </navigator>
+                <view class="item"></view>
+                <view class="item"></view>
+                <view class="item"></view>
+            </view>
+        </view>
+        <official-account></official-account>
+    </view>
+</view>
+<menu-bar id="menu" activeUrl="mypage" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />

@@ -1,0 +1,432 @@
+/* pages/goods/goods_detail.wxss */
+.container {
+    max-width: 100%;
+}
+
+.goods-swiper {
+    height: 100vw;
+}
+
+.goods-swiper .swiper {
+    height: 100%;
+}
+
+.goods-swiper .swiper .swiper-item {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+.goods-swiper .swiper .swiper-item .content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.goods-swiper .swiper .swiper-item .content .image {
+    height: 100%;
+    width: 100%;
+}
+
+.goods-swiper .swiper .swiper-item .content .video {
+    height: 100%;
+    width: 100%;
+}
+
+.goods-swiper .swiper .swiper-item .content .watermark {
+    width: calc(100vw / 4);
+    height: calc(100vw / 4);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.goods-swiper .swiper .swiper-item .content .watermark-word {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 400;
+}
+
+.goods-content {
+    width: 100%;
+}
+
+.goods-info-content {
+    padding: 15px;
+    background-color: #fff;
+}
+
+.goods-info-content .price-content {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.goods-info-content .goods-price-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.goods-info-content .goods-price-info .price-info {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+}
+
+.goods-info-content .goods-price-info .price-info .symbol {
+    font-size: 16px;
+    color: #cf000e;
+    font-weight: bold;
+}
+
+.goods-info-content .goods-price-info .price-info .price {
+    font-size: 22px;
+    color: #cf000e;
+    font-weight: bold;
+}
+
+.goods-info-content .goods-price-info .price-info .unit {
+    font-size: 16px;
+    color: #b8b8b8;
+}
+
+.goods-info-content .goods-price-info .price-info .original-price {
+    font-size: 16px;
+    color: #b8b8b8;
+    text-decoration: line-through;
+}
+
+.goods-info-content .goods-price-info .adword-info .adword {
+    font-size: 15px;
+    color: #0084ff;
+    font-weight: bold;
+    animation: move 1.1s ease;
+}
+
+.goods-info-content .goods-title {
+    font-size: 20px;
+    color: #222222;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.goods-info-content .goods-adword {
+    font-size: 16px;
+    color: #8a8a8a;
+    margin-top: 15px;
+}
+
+.goods-info-content .delivery-content {
+    padding-top: 15px;
+}
+
+.goods-info-content .delivery-content .item {
+    display: flex;
+    align-items: center;
+}
+
+.goods-info-content .delivery-content .item .icon-1 {
+    width: 22px;
+    height: 18px;
+}
+
+.goods-info-content .delivery-content .item .icon-2 {
+    width: 20px;
+    height: 17px;
+}
+
+.goods-info-content .delivery-content .item .text {
+    font-size: 15px;
+    color: #222222;
+}
+
+.option-info-content {
+    padding: 15px;
+    background-color: #fff;
+    margin-top: 15px;
+}
+
+.option-info-content .title {
+    font-size: 16px;
+    color: #222222;
+}
+
+.option-info-content .item-list {
+    margin-top: 20px;
+}
+
+.option-info-content .item-list .item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.option-info-content .item-list .item:last-child {
+    margin-bottom: 0;
+}
+
+.option-info-content .item-list .item .key {
+    font-size: 15px;
+    color: #b8b8b8;
+    width: 40%;
+}
+
+.option-info-content .item-list .item .value {
+    font-size: 15px;
+    color: #222222;
+    width: calc(100% - 40%);
+    padding-left: 5px;
+}
+
+.shop-info-content {
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+.goods-detail-info {
+    padding: 15px;
+    background-color: #fff;
+    margin-top: 15px;
+}
+
+.goods-detail-info .detail-title {
+    font-size: 16px;
+    color: #222222;
+}
+
+.goods-detail-info .detail-info {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.goods-info-footer {
+    padding: 15px;
+    background-color: #fff;
+    margin-top: 15px;
+}
+
+.goods-menu-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border-top: 1px solid #e7e7e7;
+    padding-right: 15px;
+    z-index: 850;
+}
+
+.goods-menu-bar .menu-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.goods-menu-bar .menu-content .left {
+    width: 75%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.goods-menu-bar .menu-content .left .left-item {
+    width: 24.99%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.goods-menu-bar .menu-content .left .left-item .item-image {
+    width: 30px;
+    height: 38px;
+    position: relative;
+}
+
+.goods-menu-bar .menu-content .left .left-item .item-image .image {
+    width: 100%;
+    height: 100%;
+}
+
+.goods-menu-bar .menu-content .left .left-item .item-image .cart-badge {
+    position: absolute;
+    background-color: #cf000e;
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    font-size: 11px;
+    top: -7px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.goods-menu-bar .menu-content .right {
+    width: calc(100% - 75%);
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.goods-menu-bar .menu-content .right .right-content {
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 12px 0px;
+    width: 100%;
+    text-align: center;
+}
+
+.goods-menu-bar .menu-content .right .right-content.disable {
+    background-color: #bfbfbf;
+    color: #fff;
+}
+
+.goods-menu-bar .menu-content .right .right-content.enable {
+    background-color: #ffcc33;
+    color: #222222;
+}
+
+.option-tool {
+    position: fixed;
+    width: 100%;
+    bottom: -1px;
+    z-index: 800;
+    height: 0px;
+    background-color: #fff;
+    transition: all 260ms ease;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.option-tool.collapsed {
+    background-color: #fff;
+    height: 75%;
+    bottom: 0;
+}
+
+.option-tool .header {
+    padding: 8px 15px 0px 15px;
+    text-align: right;
+}
+
+.option-tool .header .icon-cancel {
+    width: 18px;
+    height: 18px;
+}
+
+.option-tool .option-tool-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.option-tool .option-tool-content .goods-info {
+    padding: 15px;
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.option-tool .option-tool-content .goods-info .left {
+    width: 25%;
+    height: auto;
+}
+
+.option-tool .option-tool-content .goods-info .left .image {
+    max-width: 100%;
+    height: 22vw;
+    border-radius: 8px;
+}
+
+.option-tool .option-tool-content .goods-info .right {
+    width: calc(100% - 25%);
+    height: auto;
+    padding-left: 9px;
+}
+
+.option-tool .option-tool-content .goods-info .right .goods-name {
+    font-size: 15px;
+    color: #222222;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 1.6;
+}
+
+.option-tool .option-tool-content .goods-info .right .goods-price {
+    font-size: 18px;
+    color: #cf000e;
+    font-weight: bold;
+}
+
+.option-tool .option-tool-content .option-info {
+    padding: 15px;
+    display: inline-block;
+}
+
+.option-tool .option-tool-content .option-info .title-index {
+    font-size: 15px;
+    color: #222222;
+    font-weight: bold;
+}
+
+.option-tool .option-tool-content .option-info .option-menu {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 6px;
+}
+
+.option-tool .option-tool-content .option-info .option-menu .opt-item {
+    font-size: 12px;
+    color: #626262;
+    padding: 3px 6px;
+    border-radius: 10px;
+    text-align: center;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #dedede;
+}
+
+.option-tool .option-tool-content .option-info .option-menu .opt-item.active {
+    color: #cf000e;
+    border: 1px solid #cf000e;
+}
+
+.option-tool .option-tool-content .option-info .option-menu .opt-item:last-child {
+    margin-right: 0;
+}
+
+.wscnph {
+    width: 100%;
+}
+
+@keyframes move {
+    0% {
+        transform: translateY(25px);
+        opacity: 0;
+    }
+    50% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-25px);
+        opacity: 0;
+    }
+}

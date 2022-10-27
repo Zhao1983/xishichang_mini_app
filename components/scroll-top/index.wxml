@@ -1,0 +1,4 @@
+<!--components/scroll-top/index.wxml-->
+<view class="scroll-top" animation="{{animateData}}" bindtap="goTop">
+    <image class="icon" src="/static/images/ico_top.png"></image>
+</view>
