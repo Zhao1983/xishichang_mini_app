@@ -53,7 +53,7 @@ function isLoginByWeiXin(userinfo) {
                 if (res.code) {
                     if (userinfo.avatarUrl) {
                         wx.request({
-                            url: define.AUTH_URL + 'mini/login?code=' + res.code + '&avatar=' + userinfo.avatarUrl + '&nick=' + userinfo.nickName.replace(/[`^]/gi, '') + '&gender=' + userinfo.gender,
+                            url: define.AUTH_URL + 'mini/login?code=' + res.code + '&avatar=' + userinfo.avatarUrl + '&nick=' + userinfo.nickName.replace(/[`^!@#$%&*()-_+=]/gi, '') + '&gender=' + userinfo.gender,
                             method: 'POST',
                             header: {
                                 'Content-Type': 'application/json'
