@@ -37,6 +37,7 @@ Page({
         houseNo: '', // 상세주소
         packageNum: 0, // 포장수량
         packagePrice: 0, // 포장가격
+        packageOldPrice: 0, // 이전포장가격
         airPrice: 0, // 항공운비
         normalPrice: 0, // 정상운비
         type: '', // 배송형태
@@ -350,6 +351,7 @@ Page({
                         let tmpGoodsWeight = 0
                         let tmpPackageWeight = 0
                         let tmpPackagePrice = 0
+                        let tmpPackageOldPrice = 0
                         let tmpDeliveryCompanyPrice = 0
                         let tmpDeliveryCompanyOldPrice = 0
                         let tmpDeliveryEventPrice = 0
@@ -392,6 +394,7 @@ Page({
                         if (tmpEventItems && tmpEventItems.goodsImgs.length !== 0) {
                             tmpGoodsWeight += tmpEventItems.totalGoodsWeight
                             tmpPackagePrice += tmpEventItems.packagePrice
+                            tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
                             tmpPackageWeight += tmpEventItems.packageWeight
                             tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
                         }
@@ -400,6 +403,7 @@ Page({
                             totalGoodsWeight: tmpGoodsWeight,
                             totalPackageWeight: tmpPackageWeight,
                             packagePrice: tmpPackagePrice,
+                            packageOldPrice: tmpPackageOldPrice,
                             totalDeliveryCompanyPrice: tmpDeliveryCompanyPrice,
                             totalDeliveryCompanyOldPrice: tmpDeliveryCompanyOldPrice,
                             useDeliveryCompany: tmpDeliveryCompany,
@@ -730,8 +734,10 @@ Page({
         let tmpGoodsWeight = 0
         let tmpPackageWeight = 0
         let tmpPackagePrice = 0
+        let tmpPackageOldPrice = 0
         let tmpDeliveryCompanyPrice = 0
         let tmpDeliveryCompanyOldPrice = 0
+        let tmpDeliveryEventPrice = 0
         let tmpDeliveryCompany = []
 
         this.data.deliveryCompanies.filter((res) => {
@@ -783,10 +789,19 @@ Page({
             }
         })
 
+        if (this.data.eventItems && this.data.eventItems.goodsImgs.length !== 0) {
+            tmpGoodsWeight += tmpEventItems.totalGoodsWeight
+            tmpPackagePrice += tmpEventItems.packagePrice
+            tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
+            tmpPackageWeight += tmpEventItems.packageWeight
+            tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
+        }
+
         this.setData({
             totalGoodsWeight: tmpGoodsWeight,
             totalPackageWeight: tmpPackageWeight,
             packagePrice: tmpPackagePrice,
+            packageOldPrice: tmpPackageOldPrice,
             totalDeliveryCompanyPrice: tmpDeliveryCompanyPrice,
             totalDeliveryCompanyOldPrice: tmpDeliveryCompanyOldPrice,
             useDeliveryCompany: tmpDeliveryCompany,
