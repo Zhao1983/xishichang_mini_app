@@ -254,12 +254,18 @@
                 <text class="txt-1">包装费</text>
             </view>
             <view class="middle-info">
-                <text wx:if="{{freePackageNeededPrice !== 0}}" class="txt-3">免包装费还差 {{ filter.addComma(freePackageNeededPrice) }} 元</text>
-                <text wx:else class="txt-3 text-right pr-15 order-condition-price">{{ filter.addComma(packageOldPrice) }} 元</text>
+                <view wx:if="{{freePackageNeededPrice !== 0}}" class="txt-3 custom-tooltip" style="display: flex; align-items: center;">
+                    <text class="tooltiptext tooltip-top">该活动仅限指定商品哦！</text>
+                    <text>免包装费还差 {{ filter.addComma(freePackageNeededPrice) }} 元</text>
+                    <image class="icon-help mt-3" src="/static/images/ico_help.png"></image>
+                </view>
+                <view wx:elif="{{type !== 'runner' && freePackageStatus === '1' && freeEventPackageStatus === '1'}}" class="txt-3 text-right pr-15 order-condition-price">
+                    {{ filter.addComma(packageOldPrice) }}元
+                </view>
             </view>
             <view class="right-info">
-                <text wx:if="{{deliveryItems.length !== 0 || freePackageNeededPrice !== 0}}" class="txt-1 bold">¥{{filter.addComma(packagePrice)}}</text>
-                <text wx:else class="txt-1 bold">免包装费</text>
+                <view wx:if="{{deliveryItems.length !== 0 || freePackageNeededPrice !== 0 || freePackageStatus === '0'}}" class="txt-1 bold">¥{{filter.addComma(packagePrice)}}</view>
+                <view wx:else class="txt-1 bold">免包装费</view>
             </view>
         </view>
         <view wx:if="{{isTabKind === '0'}}" class="info-item">
@@ -269,13 +275,19 @@
                 <image wx:elif="{{deliveryItems.length !== 0}}" class="icon-arrow {{isShowDeliveryInfo ? 'active' : ''}}" src="/static/images/ico_bottom_1.png" bindtap="setDeliveryDetail"></image>
             </view>
             <view class="middle-info">
-                <text wx:if="{{freeShippingNeededPrice !== 0}}" class="txt-3">免运费还差 {{ filter.addComma(freeShippingNeededPrice) }} 元</text>
-                <text wx:else class="txt-3 text-right pr-15 order-condition-price">{{ filter.addComma(totalDeliveryCompanyPrice + totalDeliveryEventPrice) }} 元</text>
+                <view wx:if="{{freeShippingNeededPrice !== 0}}" class="txt-3 custom-tooltip" style="display: flex; align-items: center;">
+                    <text class="tooltiptext tooltip-top">该活动仅限指定商品哦！</text>
+                    <text>免运费还差 {{ filter.addComma(freeShippingNeededPrice) }} 元</text>
+                    <image class="icon-help mt-3" src="/static/images/ico_help.png"></image>
+                </view>
+                <view wx:elif="{{type !== 'runner' && freeEventShippingStatus === '1'}}" class="txt-3 text-right pr-15 order-condition-price">
+                    {{ filter.addComma(totalDeliveryCompanyPrice + totalDeliveryEventPrice) }} 元
+                </view>
             </view>
             <view class="right-info">
                 <view wx:if="{{type === 'runner'}}">
-                    <text wx:if="{{deliveryOriginPrice !== deliverySalesPrice}}" class="txt-2 text-through mr-5">¥{{filter.addComma(deliveryOriginPrice)}}</text>
-                    <text class="txt-1 bold">¥{{filter.addComma(deliverySalesPrice)}}</text>
+                    <view wx:if="{{deliveryOriginPrice !== deliverySalesPrice}}" class="txt-2 text-through mr-5">¥{{filter.addComma(deliveryOriginPrice)}}</view>
+                    <view class="txt-1 bold">¥{{filter.addComma(deliverySalesPrice)}}</view>
                 </view>
                 <view wx:elif="{{totalDeliveryCompanyPrice > 0 && deliveryItems.length !== 0}}" class="txt-1 bold">¥{{filter.addComma(totalDeliveryCompanyPrice)}}</view>
                 <view wx:else class="txt-1 bold">免运费</view>

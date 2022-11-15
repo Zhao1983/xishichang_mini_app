@@ -101,7 +101,9 @@ Page({
         freePackageNeededPrice: 0, // 무료포장기준필요가격
         freeShippingNeededPrice: 0, // 무료배송기준필요가격
         eventItems: null, // 이벤트상품
-        totalDeliveryEventPrice: 0 // 이벤트상품일 때의 이전배송가격(무료배송조건이 되였을 때)
+        totalDeliveryEventPrice: 0, // 이벤트상품일 때의 이전배송가격(무료배송조건이 되였을 때)
+        freeEventPackageStatus: '0', // 포장무료이벤트설정상태
+        freeEventShippingStatus: '0' // 배송무료이벤트설정상태
     },
 
     /**
@@ -292,7 +294,9 @@ Page({
                         freePackageNeededPrice: response.data.freePackageNeededPrice ? response.data.freePackageNeededPrice : 0,
                         freeShippingNeededPrice: response.data.freeShippingNeededPrice ? response.data.freeShippingNeededPrice : 0,
                         eventItems: response.data.eventItems ? response.data.eventItems : null,
-                        pageLoading: false
+                        pageLoading: false,
+                        freeEventPackageStatus: wx.getStorageSync('siteinfo').freeEventPackageStatus ? wx.getStorageSync('siteinfo').freeEventPackageStatus : '0',
+                        freeEventShippingStatus: wx.getStorageSync('siteinfo').freeEventShippingStatus ? wx.getStorageSync('siteinfo').freeEventShippingStatus : '0'
                     })
 
                     const icons = wx.getStorageSync('siteinfo').goodsIconBeans
@@ -397,6 +401,8 @@ Page({
                             tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
                             tmpPackageWeight += tmpEventItems.packageWeight
                             tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
+                        } else {
+                            tmpPackageOldPrice += tmpPackagePrice
                         }
 
                         this.setData({
@@ -795,6 +801,8 @@ Page({
             tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
             tmpPackageWeight += tmpEventItems.packageWeight
             tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
+        } else {
+            tmpPackageOldPrice += tmpPackagePrice
         }
 
         this.setData({
