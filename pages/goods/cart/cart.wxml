@@ -43,7 +43,7 @@
                     <text>免运费活动</text>
                 </view>
                 <view class="notice-text-1">
-                    <text>全场满 {{filter.addComma(freeShippingNeededPrice)}} 元免运费</text>
+                    <text>活动商品满 {{filter.addComma(freeShippingNeededPrice)}} 元免运费</text>
                 </view>
             </view>
         </view>
@@ -108,8 +108,8 @@
                                         </view>
                                     </view>
                                     <view wx:if="{{prod.eventStatus === '1'}}" class="mt-5">
-                                        <view class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
-                                        <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                                        <view wx:if="{{freeShippingNeededPrice !== 0}}" class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                                        <view wx:if="{{freePackageNeededPrice !== 0}}" class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
                                     </view>
                                 </view>
                             </view>

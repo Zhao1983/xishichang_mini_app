@@ -63,9 +63,16 @@ App({
     async setInitData() {
         // 쇼핑몰토큰정보와 쇼핑몰정보 얻기
         const res = await api.request('token?key=')
+        const freeData = await api.request('freeSettings')
+        console.log(freeData)
+        console.log(res.data)
 
         if (res !== null) {
-            wx.setStorageSync('siteinfo', res.data)
+            wx.setStorageSync('siteinfo', {
+                ...res.data,
+                freeEventShippingStatus: freeData.data.freeShippingDto ? freeData.data.freeShippingDto.status : '0',
+                freeEventPackageStatus: freeData.data.freePackageDto ? freeData.data.freePackageDto.status : '0'
+            })
 
             // 콜백호출용(onLaunch함수보다 메인페지의 onLoad함수가 먼저 호출되는 경우 리용)
             if (this.setInitDataCallback) {

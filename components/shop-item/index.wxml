@@ -57,8 +57,8 @@
                                 <text wx:if="{{item.originalPrice > 0}}" class="old">¥{{filter.addComma(item.originalPrice)}}</text>
                             </view>
                             <view wx:if="{{item.eventStatus === '1'}}" style="margin-top: 5px;">
-                                <view class="free-price-item red" style="margin-bottom: 3px;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
-                                <view class="free-price-item green">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                                <view wx:if="{{freeShippingNeededPrice !== 0}}" class="free-price-item red" style="margin-bottom: 3px;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                                <view wx:if="{{freePackageNeededPrice !== 0}}" class="free-price-item green">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
                             </view>
                         </view>
                     </swiper-item>

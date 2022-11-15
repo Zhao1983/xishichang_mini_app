@@ -44,8 +44,8 @@
                     </view>
                 </view>
                 <view wx:if="{{eventGoodsStatus === '1'}}" class="mt-15 mb-15">
-                    <view wx:if="{{freeShippingStatus === '1'}}" class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
-                    <view wx:if="{{freePackageStatus === '1'}}" class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                    <view wx:if="{{freeShippingNeededPrice !== 0}}" class="free-price-item red mr-3" style="display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                    <view wx:if="{{freePackageNeededPrice !== 0}}" class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
                 </view>
                 <view class="goods-title">{{goodsName}}</view>
                 <view class="goods-adword">{{adWords}}</view>

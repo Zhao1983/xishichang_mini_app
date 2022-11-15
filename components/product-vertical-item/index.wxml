@@ -24,8 +24,8 @@
                 </view>
             </view>
             <view wx:if="{{eventStatus === '1'}}" style="margin-top: 5px;">
-                <view class="free-price-item red" style="margin-right: 3px; display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
-                <view class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
+                <view wx:if="{{freeShippingNeededPrice !== 0}}" class="free-price-item red" style="margin-right: 3px; display: inline-block;">满 {{ filter.addComma(freeShippingNeededPrice) }} 包邮</view>
+                <view wx:if="{{freePackageNeededPrice !== 0}}" class="free-price-item green" style="display: inline-block;">满 {{ filter.addComma(freePackageNeededPrice) }} 免包装费</view>
             </view>
         </view>
         <image wx:if="{{goodsStatus === '1'}}" class="icon-cart" src="/static/images/ico_cart_enabled.png" data-shopid="{{shopId}}" data-goodsid="{{goodsId}}"

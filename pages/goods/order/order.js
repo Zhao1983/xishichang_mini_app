@@ -37,6 +37,7 @@ Page({
         houseNo: '', // 상세주소
         packageNum: 0, // 포장수량
         packagePrice: 0, // 포장가격
+        packageOldPrice: 0, // 이전포장가격
         airPrice: 0, // 항공운비
         normalPrice: 0, // 정상운비
         type: '', // 배송형태
@@ -99,7 +100,10 @@ Page({
         freeShippingStatus: '0', // 무료배송상태여부
         freePackageNeededPrice: 0, // 무료포장기준필요가격
         freeShippingNeededPrice: 0, // 무료배송기준필요가격
-        eventItems: null // 이벤트상품
+        eventItems: null, // 이벤트상품
+        totalDeliveryEventPrice: 0, // 이벤트상품일 때의 이전배송가격(무료배송조건이 되였을 때)
+        freeEventPackageStatus: '0', // 포장무료이벤트설정상태
+        freeEventShippingStatus: '0' // 배송무료이벤트설정상태
     },
 
     /**
@@ -290,7 +294,9 @@ Page({
                         freePackageNeededPrice: response.data.freePackageNeededPrice ? response.data.freePackageNeededPrice : 0,
                         freeShippingNeededPrice: response.data.freeShippingNeededPrice ? response.data.freeShippingNeededPrice : 0,
                         eventItems: response.data.eventItems ? response.data.eventItems : null,
-                        pageLoading: false
+                        pageLoading: false,
+                        freeEventPackageStatus: wx.getStorageSync('siteinfo').freeEventPackageStatus ? wx.getStorageSync('siteinfo').freeEventPackageStatus : '0',
+                        freeEventShippingStatus: wx.getStorageSync('siteinfo').freeEventShippingStatus ? wx.getStorageSync('siteinfo').freeEventShippingStatus : '0'
                     })
 
                     const icons = wx.getStorageSync('siteinfo').goodsIconBeans
@@ -345,11 +351,14 @@ Page({
                     // 택배배송이면
                     if (!response.data.type) {
                         let tmpDeliveryItems = response.data.deliveryItems ? response.data.deliveryItems : []
+                        let tmpEventItems = response.data.eventItems ? response.data.eventItems : null
                         let tmpGoodsWeight = 0
                         let tmpPackageWeight = 0
                         let tmpPackagePrice = 0
+                        let tmpPackageOldPrice = 0
                         let tmpDeliveryCompanyPrice = 0
                         let tmpDeliveryCompanyOldPrice = 0
+                        let tmpDeliveryEventPrice = 0
                         let tmpDeliveryCompany = []
 
                         tmpDeliveryItems.filter((res) => {
@@ -386,14 +395,27 @@ Page({
                             }
                         })
 
+                        if (tmpEventItems && tmpEventItems.goodsImgs.length !== 0) {
+                            tmpGoodsWeight += tmpEventItems.totalGoodsWeight
+                            tmpPackagePrice += tmpEventItems.packagePrice
+                            tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
+                            tmpPackageWeight += tmpEventItems.packageWeight
+                            tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
+                        } else {
+                            tmpPackageOldPrice += tmpPackagePrice
+                        }
+
                         this.setData({
                             totalGoodsWeight: tmpGoodsWeight,
                             totalPackageWeight: tmpPackageWeight,
                             packagePrice: tmpPackagePrice,
+                            packageOldPrice: tmpPackageOldPrice,
                             totalDeliveryCompanyPrice: tmpDeliveryCompanyPrice,
                             totalDeliveryCompanyOldPrice: tmpDeliveryCompanyOldPrice,
                             useDeliveryCompany: tmpDeliveryCompany,
                             deliveryItems: tmpDeliveryItems,
+                            eventItems: tmpEventItems,
+                            totalDeliveryEventPrice: tmpDeliveryEventPrice,
                             totalPrice: parseFloat(this.data.totalGoodsPrice) + parseFloat(tmpPackagePrice) + parseFloat(tmpDeliveryCompanyPrice),
                             windowWidth: app.globalData.deviceInfo.windowWidth - 130
                         })
@@ -718,8 +740,10 @@ Page({
         let tmpGoodsWeight = 0
         let tmpPackageWeight = 0
         let tmpPackagePrice = 0
+        let tmpPackageOldPrice = 0
         let tmpDeliveryCompanyPrice = 0
         let tmpDeliveryCompanyOldPrice = 0
+        let tmpDeliveryEventPrice = 0
         let tmpDeliveryCompany = []
 
         this.data.deliveryCompanies.filter((res) => {
@@ -771,10 +795,21 @@ Page({
             }
         })
 
+        if (this.data.eventItems && this.data.eventItems.goodsImgs.length !== 0) {
+            tmpGoodsWeight += tmpEventItems.totalGoodsWeight
+            tmpPackagePrice += tmpEventItems.packagePrice
+            tmpPackageOldPrice += tmpEventItems.packageOriPrice + tmpPackagePrice
+            tmpPackageWeight += tmpEventItems.packageWeight
+            tmpDeliveryEventPrice = tmpEventItems.totalDeliveryPrice
+        } else {
+            tmpPackageOldPrice += tmpPackagePrice
+        }
+
         this.setData({
             totalGoodsWeight: tmpGoodsWeight,
             totalPackageWeight: tmpPackageWeight,
             packagePrice: tmpPackagePrice,
+            packageOldPrice: tmpPackageOldPrice,
             totalDeliveryCompanyPrice: tmpDeliveryCompanyPrice,
             totalDeliveryCompanyOldPrice: tmpDeliveryCompanyOldPrice,
             useDeliveryCompany: tmpDeliveryCompany,
