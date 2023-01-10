@@ -31,6 +31,8 @@ var addComma = function (num) {
         result = result + '.' + thisNum[1]
     }
 
+    console.log({result});
+
     return result
 }
 

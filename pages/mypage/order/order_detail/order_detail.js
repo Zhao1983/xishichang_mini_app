@@ -314,8 +314,6 @@ Page({
                         }
                     })
 
-                    console.log(tmpDeliveryCompany)
-
                     this.setData({
                         userName: response.data.userName,
                         userPhone: response.data.userPhone,

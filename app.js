@@ -64,8 +64,6 @@ App({
         // 쇼핑몰토큰정보와 쇼핑몰정보 얻기
         const res = await api.request('token?key=')
         const freeData = await api.request('freeSettings')
-        console.log(freeData)
-        console.log(res.data)
 
         if (res !== null) {
             wx.setStorageSync('siteinfo', {

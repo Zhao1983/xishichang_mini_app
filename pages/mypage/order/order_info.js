@@ -399,10 +399,8 @@ Page({
                         let tmpData = []
 
                         response.data.filter((res) => {
-                            if (existStr.slice(0, existStr.length - 1).search(res.deliveryCompanyName) === -1) {
-                                tmpData.push(res)
-                                existStr += res.deliveryCompanyName + ','
-                            }
+                            tmpData.push(res)
+                            existStr += res.deliveryCompanyName + ','
                         })
 
                         this.setData({

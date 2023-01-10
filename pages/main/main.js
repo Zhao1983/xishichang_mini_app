@@ -28,7 +28,8 @@ Page({
         totalNum: 0, // 총 점포수
         totalPage: 1, // 총 페지수
         page: 1, // 페지수
-        size: 10 // 페지당 점포수
+        size: 10, // 페지당 점포수
+        isGrayLayout: false
     },
 
     /**
@@ -48,6 +49,7 @@ Page({
 
         this.setData({
             pageLoading: true,
+            isGrayLayout: util.setCalcTimeGrayLayout(define.START_GRAY_LAYOUT_DATE, define.END_GRAY_LAYOUT_DATE),
             isShowNoticeDialog: util.setCalcTimeNotice(define.START_DATE, define.END_DATE, util.formatDate(new Date(), '/'), wx.getStorageSync('notice_popup')) // 알림다이얼로그 로출설정값
         })
 

@@ -30,7 +30,8 @@ module.exports = require('../_commons/0.js')([
                         titleCenter: { type: Boolean, value: true },
                         rightBtn: { type: Boolean, value: false },
                         isRightBtnStatus: { type: Boolean, value: false, observer: 'initRightBtn' },
-                        btnText: { type: String, value: '' }
+                        btnText: { type: String, value: '' },
+                        isGrayLayout: { type: Boolean, value: false }
                     },
                     data: { displayStyle: '', animateNav: null, animateSearch: null, isRightBtn: false },
                     attached: function () {

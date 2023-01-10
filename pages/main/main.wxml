@@ -1,9 +1,9 @@
 <!--pages/main/main.wxml-->
-<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{false}}" isShowSearch="{{isShowSearch}}"></navigation-bar>
+<navigation-bar id="navigation" background="#f8f8f8" title="{{navTitle}}" back="{{false}}" isShowSearch="{{isShowSearch}}" isGrayLayout="{{isGrayLayout}}"></navigation-bar>
 <loading-bar isShowLoading="{{pageLoading}}" />
 <scroll-view class="container" scroll-y="true" scroll-with-animation="{{true}}" bindscroll="setScrollEvent" scroll-top="{{scrollTop}}" refresher-enabled="{{true}}" refresher-threshold="{{100}}"
     refresher-default-style="black" refresher-background="#f5f6fd" refresher-triggered="{{isPageRefreshTrigger}}" bindrefresherrefresh="setRefreshPage" bindscrolltolower="setScrollReachBottom"
-    style="height: {{heightContent}}px;">
+    style="height: {{heightContent}}px; {{isGrayLayout ? 'filter: grayscale(100%);' : ''}}">
     <image class="header-background" src="/static/images/main_top_background.png"></image>
     <view class="main-content">
         <view class="search-content">
@@ -70,4 +70,4 @@
 <!-- 알림 다이얼로그 -->
 <notice-dialog isShowDialog="{{isShowNoticeDialog}}" bindnotice="setActionNotice" />
 <scroll-top isShow="{{isScroll}}" bindtopevent="setScrollTop" />
-<menu-bar activeUrl="main" cartCount="{{cartCount}}" bindactiontap="setMenuAction" />
+<menu-bar activeUrl="main" cartCount="{{cartCount}}" isGrayLayout="{{isGrayLayout}}" bindactiontap="setMenuAction" />

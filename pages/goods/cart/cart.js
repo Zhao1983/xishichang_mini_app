@@ -36,7 +36,8 @@ Page({
         freePackageStatus: '0', // 패키지가격에 따르는 무료배송상태
         freePackageNeededPrice: 0, // 무료배송상태가 될수 있는 기준패키지가격
         deliveryStatus: '', // 배송지존재여부값
-        totalPriceByEvent: 0
+        totalPriceByEvent: 0,
+        freeShippingPrice: 0
     },
 
     /**
@@ -143,7 +144,8 @@ Page({
             freeShippingStatus: wx.getStorageSync('siteinfo').freeShippingDto ? wx.getStorageSync('siteinfo').freeShippingDto.status : '0',
             freeShippingNeededPrice: wx.getStorageSync('siteinfo').freeShippingDto ? wx.getStorageSync('siteinfo').freeShippingDto.price : 0,
             freePackageStatus: wx.getStorageSync('siteinfo').freePackageDto ? wx.getStorageSync('siteinfo').freePackageDto.status : '0',
-            freePackageNeededPrice: wx.getStorageSync('siteinfo').freePackageDto ? wx.getStorageSync('siteinfo').freePackageDto.price : 0
+            freePackageNeededPrice: wx.getStorageSync('siteinfo').freePackageDto ? wx.getStorageSync('siteinfo').freePackageDto.price : 0,
+            freeShippingPrice: wx.getStorageSync('siteinfo').freeShippingDto ? wx.getStorageSync('siteinfo').freeShippingDto.price : 0
         })
         const response = await api.request('carts')
 
@@ -158,9 +160,15 @@ Page({
                     response.data.cartItems.filter((shop) => {
                         tempSubData = []
                         shop.checked = false
+                        shop.visible = false // 점포 체크박스보임상태
 
                         shop.goods.filter((prod) => {
                             prod.checked = false
+
+                            if (prod.status === '1') {
+                                shop.visible = true
+                            }
+
                             const value = {
                                 id: prod.id,
                                 num: prod.num
@@ -212,7 +220,7 @@ Page({
                 shop.checked = !shop.checked
 
                 shop.goods.filter((prod) => {
-                    prod.checked = shop.checked
+                    prod.checked = !this.data.isShowEdit ? prod.status === '1' && shop.checked : shop.checked
                 })
             }
         })
@@ -224,6 +232,7 @@ Page({
         let totalPriceByEvent = 0
         let totalWeight = 0
         let totalGoods = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop) => {
             shop.goods.filter((prod) => {
@@ -253,7 +262,13 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
@@ -263,7 +278,8 @@ Page({
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
             totalWeight: totalWeight,
-            totalGoods: totalGoods
+            totalGoods: totalGoods,
+            freeShippingPrice
         })
     },
     // 상품 선택
@@ -285,7 +301,7 @@ Page({
         this.data.cartItems.filter((shop) => {
             if (shop.shopId === e.currentTarget.dataset.shopid) {
                 shop.goods.filter((prod) => {
-                    if (!prod.checked) {
+                    if (!prod.checked && prod.status === '1') {
                         isCheckedGood = true
                     }
                 })
@@ -301,6 +317,7 @@ Page({
         let totalPriceByEvent = 0
         let totalWeight = 0
         let totalGoods = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop) => {
             shop.goods.filter((prod) => {
@@ -330,7 +347,13 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
@@ -340,7 +363,8 @@ Page({
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
             totalWeight: totalWeight,
-            totalGoods: totalGoods
+            totalGoods: totalGoods,
+            freeShippingPrice
         })
     },
     // 전체 선택
@@ -353,22 +377,25 @@ Page({
         let totalPriceByEvent = 0
         let totalWeight = 0
         let totalGoods = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop) => {
             shop.checked = this.data.isCheckAll
 
             shop.goods.filter((prod) => {
-                prod.checked = this.data.isCheckAll
+                prod.checked = !this.data.isShowEdit ? prod.status === '1' && this.data.isCheckAll : this.data.isCheckAll
                 // 전체 상품의 총가격
                 if (this.data.isCheckAll) {
-                    totalPrice += util.setCalculatePriceAndQuantity(prod.salesPrice, 0, prod.num, 'plus')
+                    if (prod.checked) {
+                        totalPrice += util.setCalculatePriceAndQuantity(prod.salesPrice, 0, prod.num, 'plus')
 
-                    if (prod.eventStatus === '1') {
-                        totalPriceByEvent += util.setCalculatePriceAndQuantity(prod.salesPrice, 0, prod.num, 'plus')
+                        if (prod.eventStatus === '1') {
+                            totalPriceByEvent += util.setCalculatePriceAndQuantity(prod.salesPrice, 0, prod.num, 'plus')
+                        }
+
+                        totalWeight += parseFloat(prod.weight) * prod.num
+                        totalGoods++
                     }
-
-                    totalWeight += parseFloat(prod.weight) * prod.num
-                    totalGoods++
                 }
             })
         })
@@ -380,7 +407,13 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
@@ -389,7 +422,8 @@ Page({
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
             totalWeight: totalWeight,
-            totalGoods: totalGoods
+            totalGoods: totalGoods,
+            freeShippingPrice
         })
     },
     // 상품개수 감소
@@ -397,6 +431,7 @@ Page({
         let totalPrice = 0
         let totalPriceByEvent = 0
         let totalWeight = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop, index) => {
             if (shop.shopId === e.currentTarget.dataset.shopid) {
@@ -448,7 +483,13 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
@@ -456,7 +497,8 @@ Page({
             isModifyStatus: true,
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
-            totalWeight: totalWeight
+            totalWeight: totalWeight,
+            freeShippingPrice
         })
     },
     // 상품개수 증가
@@ -464,6 +506,7 @@ Page({
         let totalPrice = 0
         let totalPriceByEvent = 0
         let totalWeight = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop, index) => {
             if (shop.shopId === e.currentTarget.dataset.shopid) {
@@ -515,7 +558,13 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
@@ -523,7 +572,8 @@ Page({
             isModifyStatus: true,
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
-            totalWeight: totalWeight
+            totalWeight: totalWeight,
+            freeShippingPrice
         })
     },
     // 키로 입력
@@ -531,6 +581,7 @@ Page({
         let totalPrice = 0
         let totalPriceByEvent = 0
         let totalWeight = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop) => {
             if (shop.shopId === e.currentTarget.dataset.shopid) {
@@ -568,14 +619,21 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
             cartItems: this.data.cartItems,
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
-            totalWeight: totalWeight
+            totalWeight: totalWeight,
+            freeShippingPrice
         })
     },
     // 해당 입력창에서 초점이 해제될 때
@@ -583,6 +641,7 @@ Page({
         let totalPrice = 0
         let totalPriceByEvent = 0
         let totalWeight = 0
+        let freeShippingPrice = 0
 
         this.data.cartItems.filter((shop, index) => {
             if (shop.shopId === e.currentTarget.dataset.shopid) {
@@ -634,14 +693,21 @@ Page({
 
         if (totalPriceByEvent.toString().indexOf('.') !== -1) {
             const temp = totalPriceByEvent.toString().split('.')[1]
-            totalPriceByEvent = temp.length > 2 ? parseFloat(totalPriceByEvent.toFixed(1)) : totalPriceByEvent
+            if (temp.length === 1) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 10) - parseInt(parseFloat(totalPriceByEvent) * 10)) / 10
+            } else if (temp.length === 2) {
+                freeShippingPrice = (parseInt(parseFloat(this.data.freeShippingNeededPrice) * 100) - parseInt(parseFloat(totalPriceByEvent) * 100)) / 100
+            }
+        } else {
+            freeShippingPrice = this.data.freeShippingNeededPrice - totalPriceByEvent
         }
 
         this.setData({
             cartItems: this.data.cartItems,
             totalPrice: totalPrice,
             totalPriceByEvent: totalPriceByEvent,
-            totalWeight: totalWeight
+            totalWeight: totalWeight,
+            freeShippingPrice
         })
     },
     // 네비게이션 버튼 액션

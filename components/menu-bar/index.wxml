@@ -1,5 +1,5 @@
 <!--components/menu-bar/index.wxml-->
-<view class="menu-bar" animation="{{animateMenu}}" style="height: {{isDeviceHeight}}px;">
+<view class="menu-bar" animation="{{animateMenu}}" style="height: {{isDeviceHeight}}px; {{isGrayLayout ? 'filter: grayscale(100%);' : ''}}">
     <view class="menu-item" data-url="main" bindtap="redirectUrl">
         <view class="item">
             <image class="item-image" wx:if="{{activeUrl === 'main'}}" src="/static/images/ico_main_selected.png"></image>

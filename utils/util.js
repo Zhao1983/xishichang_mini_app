@@ -246,6 +246,22 @@ function setCalcTimeNotice(startdate, enddate, today, showDate) {
 }
 
 /**
+ * Gray 표시 시간계산
+ *
+ */
+function setCalcTimeGrayLayout(startdate, enddate) {
+    const todayDate = new Date()
+    const compareStartDate = new Date(startdate)
+    const compareEndDate = new Date(enddate)
+
+    if (todayDate >= compareStartDate && todayDate <= compareEndDate) {
+        return true
+    }
+
+    return false
+}
+
+/**
  * 방문 ACCESS ID 할당
  *
  */
@@ -280,5 +296,6 @@ module.exports = {
     getQueryString,
     setCalcTimeNotice,
     generateRandomString,
-    setVisitAccessId
+    setVisitAccessId,
+    setCalcTimeGrayLayout
 }

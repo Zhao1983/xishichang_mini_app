@@ -2,7 +2,7 @@
     <view class="weui-navigation-bar__placeholder {{ios ? 'ios' : 'android'}}" style="padding-top: {{statusBarHeight}}px;visibility: hidden;" />
     <view class="weui-navigation-bar__inner {{ios ? 'ios' : 'android'}}"
         style="padding-top: {{statusBarHeight}}px; color: {{color}};background: {{background}};{{displayStyle}};{{innerPaddingRight}};{{innerWidth}};">
-        <view wx:if="{{isShowSearch}}" class="search-content" animation="{{animateSearch}}" style="{{innerWidth}};">
+        <view wx:if="{{isShowSearch}}" class="search-content" animation="{{animateSearch}}" style="{{innerWidth}}; {{isGrayLayout ? 'filter: grayscale(100%);' : ''}}">
             <navigator class="search-input" url="/pages/search/search">
                 <image class="icon" src="../../../static/images/ico_search.png"></image>
                 <text class="text">请输入关键字</text>

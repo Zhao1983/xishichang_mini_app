@@ -17,6 +17,10 @@ Component({
             type: Boolean,
             value: true,
             observer: 'setAnimation'
+        },
+        isGrayLayout: {
+            type: Boolean,
+            value: false
         }
     },
     data: {
